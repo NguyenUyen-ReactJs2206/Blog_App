@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import path from 'src/constants/path'
+import { getRules } from 'src/utils/rules'
 
 interface FormData {
   email: string
@@ -31,8 +32,24 @@ export default function Login() {
                   Need an account?
                 </Link>
               </div>
-              <Input name='email' type='email' className='mt-5' placeholder='Email' />
-              <Input name='password' type='password' className='mt-2' placeholder='Password' />
+              <Input
+                name='email'
+                type='text'
+                className='mt-2'
+                placeholder='Email'
+                register={register}
+                rules={getRules.email}
+                errorMessage={errors.email?.message}
+              />
+              <Input
+                name='password'
+                type='password'
+                className='mt-2'
+                placeholder='Password'
+                register={register}
+                rules={getRules.password}
+                errorMessage={errors.password?.message}
+              />
               <div className='mt-2'>
                 <Button
                   type='submit'
