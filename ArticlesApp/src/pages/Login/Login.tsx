@@ -1,21 +1,36 @@
 import { Link } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
-
 import path from 'src/constants/path'
+
+interface FormData {
+  email: string
+  password: string
+}
 export default function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>()
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data, 'data')
+  })
+
   return (
     <div className='py-6'>
       <div className='container'>
         <div className='grid grid-cols-12 '>
           <div className='col-span-12 sm:col-span-8 sm:col-start-3 md:col-span-6 md:col-start-4'>
-            <h1 className='text-center text-4xl'>Sign in</h1>
-            <div className='my-2 text-center hover:underline'>
-              <Link to={path.register} className='text-md text-green hover:text-green/70 '>
-                Need an account?
-              </Link>
-            </div>
-            <form>
+            <form onSubmit={onSubmit}>
+              <h1 className='text-center text-4xl'>Sign in</h1>
+              <div className='my-2 text-center hover:underline'>
+                <Link to={path.register} className='text-md text-green hover:text-green/70 '>
+                  Need an account?
+                </Link>
+              </div>
               <Input name='email' type='email' className='mt-5' placeholder='Email' />
               <Input name='password' type='password' className='mt-2' placeholder='Password' />
               <div className='mt-2'>
