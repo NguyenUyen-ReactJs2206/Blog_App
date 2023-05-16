@@ -50,10 +50,10 @@ export default function Login() {
                 rules={getRules.password}
                 errorMessage={errors.password?.message}
               />
-              <div className='mt-2'>
+              <div className='mt-0'>
                 <Button
                   type='submit'
-                  className=' flex items-center justify-center rounded-md bg-green px-7 py-4 text-center text-sm uppercase text-white hover:bg-green/90'
+                  className='flex items-center justify-center rounded-md bg-green px-7 py-4 text-center text-sm uppercase text-white hover:bg-green/90'
                 >
                   Sign in
                 </Button>

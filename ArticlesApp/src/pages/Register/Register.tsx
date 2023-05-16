@@ -16,6 +16,7 @@ export default function Register() {
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>()
+  // const registerAccountMutation =
 
   const onSubmit = handleSubmit((data) => {
     console.log(data, 'data')
@@ -36,7 +37,7 @@ export default function Register() {
                 name='username'
                 type='text'
                 register={register}
-                className='mt-5'
+                className='mt-2'
                 placeholder='Username'
                 rules={getRules.username}
                 errorMessage={errors.username?.message}
@@ -59,7 +60,7 @@ export default function Register() {
                 rules={getRules.password}
                 errorMessage={errors.password?.message}
               />
-              <div className='mt-2'>
+              <div className='mt-0'>
                 <Button
                   type='submit'
                   className=' flex items-center justify-center rounded-md bg-green px-7 py-4 text-center text-sm uppercase text-white hover:bg-green/90'

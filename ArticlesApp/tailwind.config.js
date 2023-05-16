@@ -9,6 +9,12 @@ module.exports = {
       colors: {
         green: '#5CB85C'
       }
+    },
+    boxShadow: {
+      inner: 'inset 0 8px 8px -8px rgba(0, 0, 0, 0.3), inset 0 -8px 8px -8px rgba(0, 0, 0, 0.3)'
+    },
+    dropShadow: {
+      normal: '0px 1px 3px rgba(0, 0, 0, 0.3)'
     }
   },
   plugins: [
