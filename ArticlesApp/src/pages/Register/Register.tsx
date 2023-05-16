@@ -16,7 +16,6 @@ export default function Register() {
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>()
-  // const registerAccountMutation =
 
   const onSubmit = handleSubmit((data) => {
     console.log(data, 'data')
