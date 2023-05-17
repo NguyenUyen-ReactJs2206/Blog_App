@@ -21,7 +21,7 @@ export default function Login() {
   })
 
   return (
-    <div className='py-6'>
+    <div className='min-h-[90vh] py-6'>
       <div className='container'>
         <div className='grid grid-cols-12 '>
           <div className='col-span-12 sm:col-span-8 sm:col-start-3 md:col-span-6 md:col-start-4'>
