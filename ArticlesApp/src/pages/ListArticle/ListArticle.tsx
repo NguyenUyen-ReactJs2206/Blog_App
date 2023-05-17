@@ -4,18 +4,24 @@ import { getArticles } from 'src/apis/article.api'
 import { ArticleList } from 'src/types/article.type'
 import { formatDate } from 'src/helpers/formatDate'
 import { Tags, getTags } from 'src/apis/tags.api'
+import { useDispatch } from 'react-redux'
 
 export default function ListArticle() {
   const [articles, setArticles] = useState<ArticleList>()
   const [tags, setTags] = useState<Tags>()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     getArticles().then((res) => {
       const articleListResult = res.data
       console.log(articleListResult, 'articleListResult')
       setArticles(articleListResult)
+      dispatch({
+        type: 'article/getListArticleSuccess',
+        payload: articleListResult
+      })
     })
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     getTags().then((res) => {
