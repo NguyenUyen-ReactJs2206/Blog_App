@@ -1,10 +1,12 @@
 import Banner from 'src/components/Banner'
 import { useEffect, useState } from 'react'
-import { getArticles } from 'src/apis/article.api'
 import { ArticleList } from 'src/types/article.type'
 import { formatDate } from 'src/helpers/formatDate'
 import { Tags, getTags } from 'src/apis/tags.api'
+import { getArticles } from 'src/apis/article.api'
 import { useDispatch } from 'react-redux'
+import Pagination from 'src/components/Pagination.tsx'
+import SkeletonPost from 'src/components/SkeletonPost'
 
 export default function ListArticle() {
   const [articles, setArticles] = useState<ArticleList>()
@@ -44,6 +46,7 @@ export default function ListArticle() {
                 </div>
               </div>
               <div className=''>
+                {!articles && <SkeletonPost />}
                 {articles?.articles.map((article, index) => (
                   <div className='border-t border-gray-200 py-3' key={index}>
                     <div className='flex justify-between py-3'>
@@ -100,6 +103,9 @@ export default function ListArticle() {
                   </div>
                 ))}
               </div>
+              <div className='my-5 justify-center text-center'>
+                <Pagination />
+              </div>
             </div>
             <div className='md:col-span-3'>
               <div className='mx-4 rounded-md bg-gray-100 p-4'>
@@ -113,21 +119,6 @@ export default function ListArticle() {
                       {el}
                     </div>
                   ))}
-                  <div className='mt-1 cursor-pointer rounded-xl border bg-gray-400 px-2 text-[12px] text-white hover:bg-gray-600'>
-                    ftion
-                  </div>
-                  <div className='mt-1 cursor-pointer rounded-xl border bg-gray-400 px-2 text-[12px] text-white hover:bg-gray-600'>
-                    aa
-                  </div>
-                  <div className='mt-1 cursor-pointer rounded-xl border bg-gray-400 px-2 text-[12px] text-white hover:bg-gray-600'>
-                    implementation
-                  </div>
-                  <div className='mt-1 cursor-pointer rounded-xl border bg-gray-400 px-2 text-[12px] text-white hover:bg-gray-600'>
-                    imentation
-                  </div>
-                  <div className='mt-1 cursor-pointer rounded-xl border bg-gray-400 px-2 text-[12px] text-white hover:bg-gray-600'>
-                    imptation
-                  </div>
                 </div>
               </div>
             </div>
