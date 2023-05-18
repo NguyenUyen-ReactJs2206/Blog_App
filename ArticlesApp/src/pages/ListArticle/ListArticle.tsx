@@ -7,14 +7,25 @@ import { getArticles } from 'src/apis/article.api'
 import { useDispatch } from 'react-redux'
 import Pagination from 'src/components/Pagination.tsx'
 import SkeletonPost from 'src/components/SkeletonPost'
+import { PAGINATION, PaginationType } from 'src/constants/pagination'
 
 export default function ListArticle() {
   const [articles, setArticles] = useState<ArticleList>()
   const [tags, setTags] = useState<Tags>()
+  //pagination
+  const [pagination, setPagination] = useState<PaginationType>({
+    limit: PAGINATION.LIMIT,
+    currentPage: PAGINATION.CURRENT_PAGE,
+    totalPage: PAGINATION.TOTAL_PAGE
+  })
+
   const dispatch = useDispatch()
 
   useEffect(() => {
-    getArticles().then((res) => {
+    const controller = new AbortController()
+    const offset = (pagination.currentPage - 1) * PAGINATION.LIMIT
+    const limit = PAGINATION.LIMIT
+    getArticles(limit, offset, controller.signal).then((res) => {
       const articleListResult = res.data
       console.log(articleListResult, 'articleListResult')
       setArticles(articleListResult)
@@ -23,7 +34,10 @@ export default function ListArticle() {
         payload: articleListResult
       })
     })
-  }, [dispatch])
+    return () => {
+      controller.abort()
+    }
+  }, [pagination.currentPage, dispatch])
 
   useEffect(() => {
     getTags().then((res) => {
@@ -33,6 +47,15 @@ export default function ListArticle() {
     })
   }, [])
 
+  const onChangePage = (page: number) => {
+    setPagination(
+      (prev) =>
+        (prev = {
+          ...pagination,
+          currentPage: page
+        })
+    )
+  }
   return (
     <div>
       <Banner />

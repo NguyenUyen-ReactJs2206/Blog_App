@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 export default function Pagination() {
   return (
-    <nav aria-label='Page navigation example'>
+    <nav aria-label='Page navigation'>
       <ul className='inline-flex -space-x-px'>
         <li>
           <a

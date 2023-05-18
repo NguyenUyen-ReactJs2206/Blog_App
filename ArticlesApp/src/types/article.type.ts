@@ -17,8 +17,3 @@ export type ArticleList = SuccessArticle<{
     following: boolean
   }
 }>
-
-export type ListArticleConfig = {
-  limit: number
-  offset: number
-}
