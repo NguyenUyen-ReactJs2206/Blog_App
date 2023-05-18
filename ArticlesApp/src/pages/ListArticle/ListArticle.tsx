@@ -29,6 +29,11 @@ export default function ListArticle() {
       const articleListResult = res.data
       console.log(articleListResult, 'articleListResult')
       setArticles(articleListResult)
+      setPagination((prev) => ({
+        ...prev,
+        totalPage: Math.ceil(res?.data.articlesCount / PAGINATION.LIMIT)
+      }))
+
       dispatch({
         type: 'article/getListArticleSuccess',
         payload: articleListResult
@@ -48,13 +53,7 @@ export default function ListArticle() {
   }, [])
 
   const onChangePage = (page: number) => {
-    setPagination(
-      (prev) =>
-        (prev = {
-          ...pagination,
-          currentPage: page
-        })
-    )
+    setPagination((pagina) => ({ ...pagina, currentPage: page }))
   }
   return (
     <div>
@@ -127,7 +126,7 @@ export default function ListArticle() {
                 ))}
               </div>
               <div className='my-5 justify-center text-center'>
-                <Pagination />
+                <Pagination onChangePage={onChangePage} pagination={pagination} />
               </div>
             </div>
             <div className='md:col-span-3'>

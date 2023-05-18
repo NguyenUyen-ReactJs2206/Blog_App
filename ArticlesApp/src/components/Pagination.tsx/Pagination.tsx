@@ -1,66 +1,53 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-export default function Pagination() {
+import { PaginationType } from 'src/constants/pagination'
+
+type Props = {
+  onChangePage: (page: number) => void
+  pagination: PaginationType
+}
+export default function Pagination({ onChangePage, pagination }: Props) {
+  const active = pagination.currentPage
+  const items = []
+  for (let i = 1; i <= pagination.totalPage; i++) {
+    items.push(
+      <a
+        onClick={() => onChangePage(i)}
+        key={i}
+        href='#'
+        className='border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 '
+      >
+        {i}
+      </a>
+    )
+  }
+
   return (
-    <nav aria-label='Page navigation'>
-      <ul className='inline-flex -space-x-px'>
-        <li>
-          <a
-            href='#'
-            className='ml-0 rounded-l-lg border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 '
-          >
-            Previous
-          </a>
-        </li>
-        <li>
-          <a
-            href='#'
-            className='border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 '
-          >
-            1
-          </a>
-        </li>
-        <li>
-          <a
-            href='#'
-            className='border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 '
-          >
-            2
-          </a>
-        </li>
-        <li>
-          <a
-            href='#'
-            aria-current='page'
-            className='border border-gray-300 bg-blue-50 px-3 py-2 text-blue-600 hover:bg-blue-100 hover:text-blue-700 '
-          >
-            3
-          </a>
-        </li>
-        <li>
-          <a
-            href='#'
-            className='border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 '
-          >
-            4
-          </a>
-        </li>
-        <li>
-          <a
-            href='#'
-            className='border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 '
-          >
-            5
-          </a>
-        </li>
-        <li>
-          <a
-            href='#'
-            className='rounded-r-lg border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 '
-          >
-            Next
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div className='flex flex-grow '>
+      <a
+        onClick={() => {
+          if (pagination.currentPage > 0) {
+            onChangePage(pagination.currentPage - 1)
+          }
+        }}
+        href='#'
+        className='ml-0 rounded-l-lg border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 '
+      >
+        Previous
+      </a>
+
+      {items}
+
+      <a
+        onClick={() => {
+          if (pagination.currentPage <= pagination.totalPage) {
+            onChangePage(pagination.currentPage + 1)
+          }
+        }}
+        href='#'
+        className='rounded-r-lg border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 '
+      >
+        Next
+      </a>
+    </div>
   )
 }

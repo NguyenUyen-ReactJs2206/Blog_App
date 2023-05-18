@@ -1,6 +1,6 @@
 import { SuccessArticle } from './utils.type'
 
-export type ArticleList = SuccessArticle<{
+type ListArticle = {
   slug: string
   title: string
   description: string
@@ -16,4 +16,5 @@ export type ArticleList = SuccessArticle<{
     image: string
     following: boolean
   }
-}>
+}
+export type ArticleList = SuccessArticle<ListArticle>

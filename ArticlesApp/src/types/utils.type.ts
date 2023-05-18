@@ -4,4 +4,5 @@ export interface SuccessResponseApi<User> {
 
 export interface SuccessArticle<ListArticle> {
   articles: ListArticle[]
+  articlesCount: number
 }
