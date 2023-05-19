@@ -17,4 +17,9 @@ type ListArticle = {
     following: boolean
   }
 }
+
+export interface ArticleListConfig {
+  limit?: number | string
+  offset?: number | string
+}
 export type ArticleList = SuccessArticle<ListArticle>

@@ -1,4 +1,4 @@
-import { useRoutes } from 'react-router-dom'
+import { useLocation, useRoutes } from 'react-router-dom'
 import ListArticle from './pages/ListArticle'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -13,7 +13,17 @@ export default function useRouteElements() {
         <RegisterLayout>
           <ListArticle />
         </RegisterLayout>
-      )
+      ),
+      children: [
+        {
+          path: path.articles,
+          element: (
+            <RegisterLayout>
+              <ListArticle />
+            </RegisterLayout>
+          )
+        }
+      ]
     },
     {
       path: path.login,
@@ -32,5 +42,7 @@ export default function useRouteElements() {
       )
     }
   ])
+
+  const location = useLocation()
   return routeElements
 }
