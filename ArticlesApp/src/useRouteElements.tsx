@@ -1,9 +1,10 @@
-import { useLocation, useRoutes } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 import ListArticle from './pages/ListArticle'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import path from './constants/path'
 import RegisterLayout from './layouts/RegisterLayout'
+import NotFound from './pages/NotFound'
 
 export default function useRouteElements() {
   const routeElements = useRoutes([
@@ -40,9 +41,16 @@ export default function useRouteElements() {
           <Register />
         </RegisterLayout>
       )
+    },
+    {
+      path: '*',
+      element: (
+        <RegisterLayout>
+          <NotFound />
+        </RegisterLayout>
+      )
     }
   ])
 
-  const location = useLocation()
   return routeElements
 }
