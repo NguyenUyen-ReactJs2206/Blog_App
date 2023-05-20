@@ -10,6 +10,8 @@ import SkeletonPost from 'src/components/SkeletonPost'
 import { PAGINATION, PaginationType } from 'src/constants/pagination'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { Link } from 'react-router-dom'
+import path from 'src/constants/path'
+import { generateNameId } from 'src/utils/utils'
 
 export default function ListArticle() {
   const [articles, setArticles] = useState<ArticleList>()
@@ -111,7 +113,7 @@ export default function ListArticle() {
                         </div>
                       </div>
                     </div>
-                    <Link to={article.slug}>
+                    <Link to={`${path.home}${article.slug}`}>
                       <h1 className='text-xl font-semibold text-gray-800'>{article.title} </h1>
                       <p className='text-md font-light text-gray-400'>{article.description}</p>{' '}
                     </Link>
