@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        green: '#5CB85C'
+        green: '#5CB85C',
+        grayblack: '#333'
       }
     },
     boxShadow: {

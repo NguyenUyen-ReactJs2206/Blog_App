@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import path from './constants/path'
 import RegisterLayout from './layouts/RegisterLayout'
 import NotFound from './pages/NotFound'
+import ArticleDetail from './pages/ArticleDetail'
 
 export default function useRouteElements() {
   const routeElements = useRoutes([
@@ -47,6 +48,14 @@ export default function useRouteElements() {
       element: (
         <RegisterLayout>
           <NotFound />
+        </RegisterLayout>
+      )
+    },
+    {
+      path: path.articleDetail,
+      element: (
+        <RegisterLayout>
+          <ArticleDetail />
         </RegisterLayout>
       )
     }

@@ -9,6 +9,8 @@ import Pagination from 'src/components/Pagination.tsx'
 import SkeletonPost from 'src/components/SkeletonPost'
 import { PAGINATION, PaginationType } from 'src/constants/pagination'
 import useQueryParams from 'src/hooks/useQueryParams'
+import { Link } from 'react-router-dom'
+import path from 'src/constants/path'
 
 export default function ListArticle() {
   const [articles, setArticles] = useState<ArticleList>()
@@ -20,7 +22,7 @@ export default function ListArticle() {
     totalPage: PAGINATION.TOTAL_PAGE
   })
   const queryParams: ArticleListConfig = useQueryParams()
-  console.log(queryParams, 'qqqq')
+
   const queryConfig: ArticleListConfig = useMemo(
     () => ({
       limit: queryParams.limit || PAGINATION.LIMIT,
@@ -34,7 +36,6 @@ export default function ListArticle() {
     const controller = new AbortController()
     getArticles(queryConfig, controller.signal).then((res) => {
       const articleListResult = res.data
-      console.log(articleListResult, 'articleListResult')
       setArticles(articleListResult)
       setPagination((prev) => ({
         ...prev,
@@ -54,7 +55,6 @@ export default function ListArticle() {
   useEffect(() => {
     getTags().then((res) => {
       const tagsResult = res.data
-      console.log(tagsResult, 'tagsResult')
       setTags(tagsResult)
     })
   }, [])
@@ -112,8 +112,11 @@ export default function ListArticle() {
                         </div>
                       </div>
                     </div>
-                    <h1 className='text-xl font-semibold text-gray-800'>{article.title} </h1>
-                    <p className='text-md font-light text-gray-400'>{article.description}</p>
+                    <Link to={path.articleDetail}>
+                      <h1 className='text-xl font-semibold text-gray-800'>{article.title} </h1>
+                      <p className='text-md font-light text-gray-400'>{article.description}</p>{' '}
+                    </Link>
+
                     <div className='flex justify-between py-4'>
                       <div className='flex-start cursor-pointer text-sm text-gray-400 hover:text-green'>
                         <span>Read more...</span>
