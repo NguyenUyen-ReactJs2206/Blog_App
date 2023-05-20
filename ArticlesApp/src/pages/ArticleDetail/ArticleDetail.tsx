@@ -1,29 +1,46 @@
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { getArticleDetail } from 'src/apis/article.api'
 import path from 'src/constants/path'
+import { formatDate } from 'src/helpers/formatDate'
+import { ArticleDetails } from 'src/types/article.type'
 
 export default function ArticleDetail() {
+  const [articleDetail, setArticleDetail] = useState<ArticleDetails>()
+  const { nameId } = useParams()
+  console.log(nameId, 'nnnnnnnnnnnnn')
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    getArticleDetail(nameId as string, controller.signal).then((res) => {
+      const articleDetailResult = res.data
+      setArticleDetail(articleDetailResult)
+    })
+    return () => {
+      controller.abort()
+    }
+  }, [nameId])
+
   return (
     <div className='min-h-[100vh]'>
       <div className=' bg-grayblack py-8'>
         <div className='container'>
-          <h1 className='mb-7 text-4xl font-bold text-white'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, dolo
-          </h1>
+          <h1 className='mb-7 text-4xl font-bold text-white'>{articleDetail?.article.title}</h1>
           <div className='flex flex-wrap justify-start'>
             <div className='mr-6 flex flex-shrink-0'>
-              <div className='mr-2 h-10 w-10 flex-shrink-0 '>
+              <div className='mr-2 h-10 w-10 flex-shrink-0 cursor-pointer'>
                 <img
-                  src='https://www.google.com/url?sa=i&url=https%3A%2F%2Fsea.ign.com%2Favatar-generations&psig=AOvVaw3KtPxoE4q_T3EaESjcAdDI&ust=1684604635711000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCJiE0rj3gf8CFQAAAAAdAAAAABAJ'
+                  src={articleDetail?.article.author.image}
                   alt='avatar'
                   className='h-full w-full rounded-full bg-current object-cover'
                 />
               </div>
               <div className='tex-left pr-2'>
-                <div className='text-md font-light text-white'>Blahpodskhf</div>
-                <span className='block text-[12px] text-gray-400'>
-                  {/* {formatDate(article.createdAt)} */}
-                  bbbbbbbbbb
-                </span>
+                <div className='text-md cursor-pointer font-light text-white hover:text-lime-600 hover:underline'>
+                  {articleDetail?.article.author.username}
+                </div>
+                <span className='block text-[12px] text-gray-400'>{formatDate(articleDetail?.article.createdAt)}</span>
               </div>
             </div>
             <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-gray-300 bg-grayblack px-2 text-center text-sm text-gray-400 transition hover:bg-gray-300 hover:text-white'>
@@ -37,7 +54,7 @@ export default function ArticleDetail() {
               >
                 <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
               </svg>
-              <span className='mt-1'>Follow Anah Benesova</span>
+              <span className='mt-1'>Follow {articleDetail?.article.author.username}</span>
             </button>
             <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-grayblack px-2 text-center text-sm text-green transition hover:bg-green hover:text-white'>
               <svg
@@ -54,7 +71,7 @@ export default function ArticleDetail() {
                   d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z'
                 />
               </svg>
-              <span className='mt-1'>Favorite Article (123456)</span>
+              <span className='mt-1'>Favorite Article {articleDetail?.article.favorited}</span>
             </button>
           </div>
         </div>
@@ -62,48 +79,34 @@ export default function ArticleDetail() {
       <div className='py-4'>
         <div className='container'>
           <div className='py-4 text-xl text-gray-600'>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quidem facere reprehenderit voluptates
-              distinctio ea libero porro mollitia blanditiis debitis inventore, saepe sapiente. Omnis distinctio
-              sapiente, magnam illum repellendus tempora? Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde
-              temporibus natus possimus cupiditate, culpa saepe at autem laudantium? Commodi dolor veritatis odio veniam
-              doloremque, libero inventore nesciunt officia esse obcaecati! Lorem ipsum dolor, sit amet consectetur
-              adipisicing elit. Voluptate quidem facere reprehenderit voluptates distinctio ea libero porro mollitia
-              blanditiis debitis inventore, saepe sapiente. Omnis distinctio sapiente, magnam illum repellendus tempora?
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde temporibus natus possimus cupiditate, culpa
-              saepe at autem laudantium? Commodi dolor veritatis odio veniam doloremque, libero inventore nesciunt
-              officia esse obcaecati!
-            </p>
+            <p>{articleDetail?.article.body}</p>
           </div>
           <div className='my-5 flex flex-wrap justify-start'>
-            <div className='mr-1 cursor-text rounded-xl border border-gray-300 px-2 py-1 text-[12px] text-gray-400'>
-              aaaa
-            </div>
-            <div className='mr-1 cursor-text rounded-xl border border-gray-300 px-2 py-1 text-[12px] text-gray-400'>
-              aaaaaaaaa
-            </div>
-            <div className='mr-1 cursor-text rounded-xl border border-gray-300 px-2 py-1 text-[12px] text-gray-400'>
-              aaaaaaaaaa
-            </div>
-            <div className='mr-1 cursor-text rounded-xl border border-gray-300 px-2 py-1 text-[12px] text-gray-400'>
-              aaaaaaaaaa
-            </div>
+            {articleDetail?.article.tagList.map((tag, index) => (
+              <div
+                key={index}
+                className='mr-1 cursor-text rounded-xl border border-gray-300 px-2 py-1 text-[12px] text-gray-400'
+              >
+                {tag}
+              </div>
+            ))}
           </div>
           <div className='mt-10 items-center justify-center border-t border-t-gray-300 '>
             <div className='flex flex-wrap justify-center py-10'>
               <div className='mr-6 flex flex-shrink-0'>
                 <div className='mr-2 h-10 w-10 flex-shrink-0 cursor-pointer'>
                   <img
-                    src='https://www.google.com/url?sa=i&url=https%3A%2F%2Fsea.ign.com%2Favatar-generations&psig=AOvVaw3KtPxoE4q_T3EaESjcAdDI&ust=1684604635711000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCJiE0rj3gf8CFQAAAAAdAAAAABAJ'
+                    src={articleDetail?.article.author.image}
                     alt='avatar'
                     className='h-full w-full rounded-full bg-current object-cover'
                   />
                 </div>
                 <div className='tex-left pr-2'>
-                  <div className='text-md cursor-pointer font-light text-green'>Blahpodskhf</div>
+                  <div className='text-md cursor-pointer font-light text-green hover:text-lime-600 hover:underline'>
+                    {articleDetail?.article.author.username}
+                  </div>
                   <span className='block text-[12px] text-gray-400'>
-                    {/* {formatDate(article.createdAt)} */}
-                    bbbbbbbbbb
+                    {formatDate(articleDetail?.article.createdAt)}
                   </span>
                 </div>
               </div>
@@ -118,7 +121,7 @@ export default function ArticleDetail() {
                 >
                   <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
                 </svg>
-                <span className='mt-1'>Follow Anah Benesova</span>
+                <span className='mt-1'>Follow {articleDetail?.article.author.username}</span>
               </button>
               <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-white px-2 text-center text-sm text-green transition hover:bg-green hover:text-white'>
                 <svg
@@ -135,7 +138,7 @@ export default function ArticleDetail() {
                     d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z'
                   />
                 </svg>
-                <span className='mt-1'>Favorite Article (123456)</span>
+                <span className='mt-1'>Favorite Article {articleDetail?.article.favorited}</span>
               </button>
             </div>
             <div className='grid py-5 md:grid-cols-12'>

@@ -15,17 +15,7 @@ export default function useRouteElements() {
         <RegisterLayout>
           <ListArticle />
         </RegisterLayout>
-      ),
-      children: [
-        {
-          path: path.articles,
-          element: (
-            <RegisterLayout>
-              <ListArticle />
-            </RegisterLayout>
-          )
-        }
-      ]
+      )
     },
     {
       path: path.login,
@@ -48,6 +38,14 @@ export default function useRouteElements() {
       element: (
         <RegisterLayout>
           <NotFound />
+        </RegisterLayout>
+      )
+    },
+    {
+      path: path.articles,
+      element: (
+        <RegisterLayout>
+          <ListArticle />
         </RegisterLayout>
       )
     },

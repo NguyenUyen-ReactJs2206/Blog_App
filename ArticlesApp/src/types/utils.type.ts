@@ -6,3 +6,7 @@ export interface SuccessArticle<ListArticle> {
   articles: ListArticle[]
   articlesCount: number
 }
+
+export interface SuccessArticleDetail<ListArticle> {
+  article: ListArticle
+}

@@ -1,6 +1,6 @@
-import { SuccessArticle } from './utils.type'
+import { SuccessArticle, SuccessArticleDetail } from './utils.type'
 
-type ListArticle = {
+export type ListArticle = {
   slug: string
   title: string
   description: string
@@ -23,3 +23,5 @@ export interface ArticleListConfig {
   offset?: number | string
 }
 export type ArticleList = SuccessArticle<ListArticle>
+
+export type ArticleDetails = SuccessArticleDetail<ListArticle>
