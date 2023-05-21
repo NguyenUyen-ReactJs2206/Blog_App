@@ -23,20 +23,29 @@ export default function Register() {
 
   const userRegisterAccount = (body: any) => {
     const controller = new AbortController()
-
     registerAccount(body, controller.signal)
       .then((res) => {
-        const registerAccountResult = res.data
-        console.log(registerAccountResult, 'reeeeeeeeeeeeeeee')
+        toast.success('Successful account registration!', {
+          autoClose: 1000
+        })
       })
       //Khi loi 422 thi show error
       .catch((error) => {
         if (isAxiosUnprocessableEntityError<ErrorMessage>(error)) {
-          const formError = error.response?.data.errors.email[0]
+          const formError = error.response?.data.errors
           console.log(formError, 'ffffffffffffffffff')
-          toast.error(`Account ${formError}. Please register another account!`, {
-            autoClose: 1000
-          })
+          if (formError?.email) {
+            setError('user.email', {
+              message: `Account ${formError.email[0]}`,
+              type: 'Server'
+            })
+          }
+          if (formError?.username) {
+            setError('user.username', {
+              message: `Account ${formError.username[0]}`,
+              type: 'Server'
+            })
+          }
         }
       })
     return () => {
