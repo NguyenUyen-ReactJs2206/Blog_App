@@ -37,7 +37,6 @@ export default function ListArticle() {
     getArticles(queryConfig, controller.signal)
       .then((res) => {
         const articleListResult = res.data
-        console.log(articleListResult, 'vvvvvvvvvvv')
         setArticles(articleListResult)
         setPagination((prev) => ({
           ...prev,

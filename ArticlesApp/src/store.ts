@@ -2,10 +2,11 @@ import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/dist/query'
 import articlesReducer from './useslice/articles.slice'
 import { useDispatch } from 'react-redux'
+import userReducer from './useslice/user.slice'
 // ...
 
 export const store = configureStore({
-  reducer: { articlesReducer: articlesReducer }
+  reducer: { articlesReducer: articlesReducer, userReducer: userReducer }
 })
 
 setupListeners(store.dispatch)

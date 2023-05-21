@@ -1,5 +1,5 @@
-export interface SuccessResponseApi<User> {
-  user: User
+export interface SuccessResponseApi<UserData> {
+  user: UserData
 }
 
 export interface SuccessArticle<ListArticle> {
@@ -9,4 +9,11 @@ export interface SuccessArticle<ListArticle> {
 
 export interface SuccessArticleDetail<ListArticle> {
   article: ListArticle
+}
+
+export interface ErrorMessage {
+  errors: {
+    email: string[]
+    username: string[]
+  }
 }
