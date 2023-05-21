@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { getArticleDetail } from 'src/apis/article.api'
 import SkeletonArticleDetail from 'src/components/SkeletonArticleDetail'
@@ -9,18 +10,33 @@ import { ArticleDetails } from 'src/types/article.type'
 export default function ArticleDetail() {
   const [articleDetail, setArticleDetail] = useState<ArticleDetails>()
   const { nameId } = useParams()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const controller = new AbortController()
-    getArticleDetail(nameId as string, controller.signal).then((res) => {
-      const articleDetailResult = res.data
-      setArticleDetail(articleDetailResult)
-      console.log(setArticleDetail, 'aaaaaaaaaaaaaaa')
-    })
+    getArticleDetail(nameId as string, controller.signal)
+      .then((res) => {
+        const articleDetailResult = res.data
+        console.log(articleDetailResult, 'aaaaaaaaaaaaa')
+        setArticleDetail(articleDetailResult)
+
+        dispatch({
+          type: 'article/getArticleDetail',
+          payload: articleDetailResult
+        })
+      })
+      .catch((error) => {
+        if (!(error.code === 'ERR_CANCELED')) {
+          dispatch({
+            type: 'article/getArticleDetailFailed',
+            payload: error
+          })
+        }
+      })
     return () => {
       controller.abort()
     }
-  }, [nameId])
+  }, [nameId, dispatch])
 
   return (
     <>

@@ -11,7 +11,6 @@ import { PAGINATION, PaginationType } from 'src/constants/pagination'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
-import { generateNameId } from 'src/utils/utils'
 
 export default function ListArticle() {
   const [articles, setArticles] = useState<ArticleList>()
@@ -35,19 +34,30 @@ export default function ListArticle() {
 
   useEffect(() => {
     const controller = new AbortController()
-    getArticles(queryConfig, controller.signal).then((res) => {
-      const articleListResult = res.data
-      setArticles(articleListResult)
-      setPagination((prev) => ({
-        ...prev,
-        totalPage: Math.ceil(res?.data.articlesCount / PAGINATION.LIMIT)
-      }))
+    getArticles(queryConfig, controller.signal)
+      .then((res) => {
+        const articleListResult = res.data
+        console.log(articleListResult, 'vvvvvvvvvvv')
+        setArticles(articleListResult)
+        setPagination((prev) => ({
+          ...prev,
+          totalPage: Math.ceil(res?.data.articlesCount / PAGINATION.LIMIT)
+        }))
 
-      dispatch({
-        type: 'article/getListArticleSuccess',
-        payload: articleListResult
+        dispatch({
+          type: 'article/getListArticleSuccess',
+          payload: articleListResult
+        })
       })
-    })
+      //khi abort ko muon dispatch len
+      .catch((error) => {
+        if (!(error.code === 'ERR_CANCELED')) {
+          dispatch({
+            type: 'article/getListArticleFaild',
+            payload: error
+          })
+        }
+      })
     return () => {
       controller.abort()
     }
