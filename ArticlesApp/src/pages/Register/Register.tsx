@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 
 export default function Register() {
   // const [profile, setProfile] = useState<FormData>(registerUser)
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const {
     register,
     handleSubmit,

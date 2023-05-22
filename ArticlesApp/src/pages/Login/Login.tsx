@@ -38,7 +38,7 @@ export default function Login() {
                 className='mt-2'
                 placeholder='Email'
                 register={register}
-                rules={getRules.email}
+                rules={getRules.user?.email}
                 errorMessage={errors.email?.message}
               />
               <Input
@@ -47,7 +47,7 @@ export default function Login() {
                 className='mt-2'
                 placeholder='Password'
                 register={register}
-                rules={getRules.password}
+                rules={getRules.user?.password}
                 errorMessage={errors.password?.message}
               />
               <div className='mt-0'>
