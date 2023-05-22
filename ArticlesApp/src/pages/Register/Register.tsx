@@ -7,7 +7,7 @@ import { getRules } from 'src/utils/rules'
 import { User } from 'src/types/user.type'
 import { registerAccount } from 'src/apis/auth.api'
 import { useDispatch } from 'react-redux'
-import { ErrorMessage, SuccessResponseApi } from 'src/types/utils.type'
+import { ErrorMessage } from 'src/types/utils.type'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { toast } from 'react-toastify'
 
@@ -19,7 +19,7 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
     setError
-  } = useForm<SuccessResponseApi<User>>()
+  } = useForm<User>()
 
   const userRegisterAccount = (body: any) => {
     const controller = new AbortController()
@@ -35,13 +35,13 @@ export default function Register() {
           const formError = error.response?.data.errors
           console.log(formError, 'ffffffffffffffffff')
           if (formError?.email) {
-            setError('user.email', {
+            setError('email', {
               message: `Account ${formError.email[0]}`,
               type: 'Server'
             })
           }
           if (formError?.username) {
-            setError('user.username', {
+            setError('username', {
               message: `Account ${formError.username[0]}`,
               type: 'Server'
             })
@@ -55,7 +55,7 @@ export default function Register() {
   const onSubmit = handleSubmit((data) => {
     userRegisterAccount({ user: data })
   })
-
+  console.log(errors, 'errrrrrrrrrrrr')
   return (
     <div className='min-h-[90vh] py-6'>
       <div className='container'>
@@ -74,8 +74,8 @@ export default function Register() {
                 register={register}
                 className='mt-2'
                 placeholder='Username'
-                rules={getRules.user.username}
-                errorMessage={errors.user?.username?.message}
+                rules={getRules.username}
+                errorMessage={errors.username?.message}
               />
               <Input
                 name='email'
@@ -83,8 +83,8 @@ export default function Register() {
                 className='mt-2'
                 placeholder='Email'
                 register={register}
-                rules={getRules.user.email}
-                errorMessage={errors.user?.email?.message}
+                rules={getRules.email}
+                errorMessage={errors.email?.message}
               />
               <Input
                 name='password'
@@ -92,8 +92,8 @@ export default function Register() {
                 className='mt-2'
                 placeholder='Password'
                 register={register}
-                rules={getRules.user.password}
-                errorMessage={errors.user?.password?.message}
+                rules={getRules.password}
+                errorMessage={errors.password?.message}
               />
               <div className='mt-0'>
                 <Button
