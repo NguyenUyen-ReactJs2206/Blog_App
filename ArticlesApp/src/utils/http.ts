@@ -19,7 +19,10 @@ class Http {
       },
       function (error: AxiosError) {
         //Difference Error 422
-        if (error.response?.status !== HttpStatusCode.UnprocessableEntity) {
+        if (
+          error.response?.status !== HttpStatusCode.UnprocessableEntity &&
+          error.response?.status !== HttpStatusCode.Forbidden
+        ) {
           const data: any | undefined = error.response?.data
           const message = data.message || error.message
           toast.error(message)

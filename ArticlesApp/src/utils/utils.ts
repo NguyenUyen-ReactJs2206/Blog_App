@@ -18,3 +18,7 @@ export function isAxiosErrorFunc<T>(error: unknown): error is AxiosError<T> {
 export function isAxiosUnprocessableEntityError<FormError>(error: unknown): error is AxiosError<FormError> {
   return isAxiosError(error) && error.response?.status === HttpStatusCode.UnprocessableEntity
 }
+
+export function isAxiosForbiddenError<FormError>(error: unknown): error is AxiosError<FormError> {
+  return isAxiosError(error) && error.response?.status === HttpStatusCode.Forbidden
+}

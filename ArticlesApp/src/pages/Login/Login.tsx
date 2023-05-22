@@ -4,20 +4,54 @@ import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import path from 'src/constants/path'
 import { getRules } from 'src/utils/rules'
+import { loginAccount } from 'src/apis/auth.api'
+import { toast } from 'react-toastify'
+import { User } from 'src/types/user.type'
+import { isAxiosForbiddenError } from 'src/utils/utils'
+import { ErrorForbiddenMessage } from 'src/types/utils.type'
 
-interface FormData {
-  email: string
-  password: string
-}
+type FormLoginUser = Pick<User, 'email' | 'password'>
 export default function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
-  } = useForm<FormData>()
+    formState: { errors },
+    setError
+  } = useForm<FormLoginUser>()
 
+  const userLoginAccount = (body: any) => {
+    const controller = new AbortController()
+    loginAccount(body, controller.signal)
+      .then((res) => {
+        toast.success('Login successful!', {
+          autoClose: 1000
+        })
+      })
+      //Khi loi 422 thi show error
+      .catch((error) => {
+        if (isAxiosForbiddenError<ErrorForbiddenMessage>(error)) {
+          const formError = error.response?.data.errors
+          console.log(formError, 'ffffffffffffffffff')
+          if (formError?.['email or password']) {
+            setError('email', {
+              message: `Email or password ${formError['email or password']}`,
+              type: 'Server'
+            })
+          }
+          if (formError?.['email or password']) {
+            setError('password', {
+              message: `Email or password ${formError['email or password']}`,
+              type: 'Server'
+            })
+          }
+        }
+      })
+    return () => {
+      controller.abort()
+    }
+  }
   const onSubmit = handleSubmit((data) => {
-    console.log(data, 'data')
+    userLoginAccount({ user: data })
   })
 
   return (

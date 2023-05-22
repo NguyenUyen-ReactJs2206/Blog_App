@@ -11,9 +11,15 @@ export interface SuccessArticleDetail<ListArticle> {
   article: ListArticle
 }
 
-export interface ErrorMessage {
+export interface ErrorUnprocessableEntityMessage {
   errors: {
     email: string[]
     username: string[]
+  }
+}
+
+export interface ErrorForbiddenMessage {
+  errors: {
+    'email or password': string[]
   }
 }

@@ -7,7 +7,7 @@ import { getRules } from 'src/utils/rules'
 import { User } from 'src/types/user.type'
 import { registerAccount } from 'src/apis/auth.api'
 import { useDispatch } from 'react-redux'
-import { ErrorMessage } from 'src/types/utils.type'
+import { ErrorUnprocessableEntityMessage } from 'src/types/utils.type'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { toast } from 'react-toastify'
 
@@ -31,9 +31,9 @@ export default function Register() {
       })
       //Khi loi 422 thi show error
       .catch((error) => {
-        if (isAxiosUnprocessableEntityError<ErrorMessage>(error)) {
+        if (isAxiosUnprocessableEntityError<ErrorUnprocessableEntityMessage>(error)) {
           const formError = error.response?.data.errors
-          console.log(formError, 'ffffffffffffffffff')
+
           if (formError?.email) {
             setError('email', {
               message: `Account ${formError.email[0]}`,
@@ -55,7 +55,6 @@ export default function Register() {
   const onSubmit = handleSubmit((data) => {
     userRegisterAccount({ user: data })
   })
-  console.log(errors, 'errrrrrrrrrrrr')
   return (
     <div className='min-h-[90vh] py-6'>
       <div className='container'>
