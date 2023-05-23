@@ -45,10 +45,6 @@ class Http {
           this.accessToken = (response.data as AuthSuccess).user.token
           saveTokenToLS(this.accessToken)
         }
-        // else if (url === '/users/logout') {
-        //   this.token = ''
-        //   clearTokenFromLs()
-        // }
         return response
       },
       function (error: AxiosError) {
