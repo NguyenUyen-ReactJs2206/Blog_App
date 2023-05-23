@@ -3,7 +3,8 @@ const path = {
   login: '/login',
   register: '/register',
   articles: '/articles',
-  articleDetail: ':nameId'
+  articleDetail: ':nameId',
+  profile: '/profiles'
 } as const
 
 export default path

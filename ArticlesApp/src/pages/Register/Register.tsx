@@ -1,19 +1,21 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { useContext } from 'react'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import path from 'src/constants/path'
 import { getRules } from 'src/utils/rules'
 import { User } from 'src/types/user.type'
 import { registerAccount } from 'src/apis/auth.api'
-import { useDispatch } from 'react-redux'
 import { ErrorUnprocessableEntityMessage } from 'src/types/utils.type'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { toast } from 'react-toastify'
+import { AppContext } from 'src/contexts/app.context'
 
 export default function Register() {
-  // const [profile, setProfile] = useState<FormData>(registerUser)
-  // const dispatch = useDispatch()
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -28,6 +30,8 @@ export default function Register() {
         toast.success('Successful account registration!', {
           autoClose: 1000
         })
+        setIsAuthenticated(true)
+        navigate('/')
       })
       //Khi loi 422 thi show error
       .catch((error) => {

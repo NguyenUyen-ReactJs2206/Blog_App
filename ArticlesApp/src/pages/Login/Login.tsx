@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
@@ -9,9 +10,13 @@ import { toast } from 'react-toastify'
 import { User } from 'src/types/user.type'
 import { isAxiosForbiddenError } from 'src/utils/utils'
 import { ErrorForbiddenMessage } from 'src/types/utils.type'
+import { AppContext } from 'src/contexts/app.context'
 
 type FormLoginUser = Pick<User, 'email' | 'password'>
 export default function Login() {
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -26,6 +31,8 @@ export default function Login() {
         toast.success('Login successful!', {
           autoClose: 1000
         })
+        setIsAuthenticated(true)
+        navigate('/')
       })
       //Khi loi 422 thi show error
       .catch((error) => {

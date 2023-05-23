@@ -26,12 +26,12 @@ export default function ArticleDetail() {
         })
       })
       .catch((error) => {
-        if (!(error.code === 'ERR_CANCELED')) {
-          dispatch({
-            type: 'article/getArticleDetailFailed',
-            payload: error
-          })
-        }
+        // if (!(error.code === 'ERR_CANCELED')) {
+        //   dispatch({
+        //     type: 'article/getArticleDetailFailed',
+        //     payload: error
+        //   })
+        // }
       })
     return () => {
       controller.abort()

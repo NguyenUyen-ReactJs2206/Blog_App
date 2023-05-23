@@ -50,12 +50,12 @@ export default function ListArticle() {
       })
       //khi abort ko muon dispatch len
       .catch((error) => {
-        if (!(error.code === 'ERR_CANCELED')) {
-          dispatch({
-            type: 'article/getListArticleFaild',
-            payload: error
-          })
-        }
+        // if (!(error.code === 'ERR_CANCELED')) {
+        //   dispatch({
+        //     type: 'article/getListArticleFaild',
+        //     payload: error
+        //   })
+        // }
       })
     return () => {
       controller.abort()
