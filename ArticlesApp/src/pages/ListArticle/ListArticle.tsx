@@ -1,5 +1,5 @@
 import Banner from 'src/components/Banner'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useContext } from 'react'
 import { ArticleList, ArticleListConfig } from 'src/types/article.type'
 import { formatDate } from 'src/helpers/formatDate'
 import { Tags, getTags } from 'src/apis/tags.api'
@@ -11,8 +11,10 @@ import { PAGINATION, PaginationType } from 'src/constants/pagination'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
+import { AppContext } from 'src/contexts/app.context'
 
 export default function ListArticle() {
+  const { isAuthenticated } = useContext(AppContext)
   const [articles, setArticles] = useState<ArticleList>()
   const [tags, setTags] = useState<Tags>()
   //pagination
@@ -74,7 +76,7 @@ export default function ListArticle() {
   }
   return (
     <div>
-      <Banner />
+      {!isAuthenticated && <Banner />}
       <div className='my-6'>
         <div className='container'>
           <div className='relative grid grid-cols-1 text-left md:mx-6 md:grid-cols-12'>

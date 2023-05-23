@@ -72,7 +72,7 @@ export default function RegisterHeader() {
                   Home
                 </NavLink>
                 <NavLink
-                  to='/a'
+                  to={path.editor}
                   className={({ isActive }) =>
                     classNames('text-md mr-4 flex hover:text-black', {
                       'text-gray-400': !isActive,
@@ -97,7 +97,7 @@ export default function RegisterHeader() {
                   <span>New Article</span>
                 </NavLink>
                 <NavLink
-                  to='/a'
+                  to={path.settings}
                   className={({ isActive }) =>
                     classNames('text-md mr-4 flex hover:text-black', {
                       'text-gray-400': !isActive,
@@ -120,10 +120,10 @@ export default function RegisterHeader() {
                     />
                     <path strokeLinecap='round' strokeLinejoin='round' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' />
                   </svg>
-                  <span>New Article</span>
+                  <span>Settings</span>
                 </NavLink>
                 <NavLink
-                  to='/a'
+                  to={path.profile}
                   className={({ isActive }) =>
                     classNames('text-md mr-4 flex hover:text-black', {
                       'text-gray-400': !isActive,

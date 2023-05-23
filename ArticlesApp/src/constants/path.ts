@@ -4,6 +4,8 @@ const path = {
   register: '/register',
   articles: '/articles',
   articleDetail: ':nameId',
+  editor: '/editor',
+  settings: '/settings',
   profile: '/profiles'
 } as const
 

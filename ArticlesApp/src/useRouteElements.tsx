@@ -9,6 +9,8 @@ import NotFound from './pages/NotFound'
 import ArticleDetail from './pages/ArticleDetail'
 import Profile from './pages/Profile'
 import { AppContext } from './contexts/app.context'
+import EditorArticle from './pages/EditorArticle'
+import Settings from './pages/Settings'
 
 //Neu da login thi cho tiep tuc vao, chua login thi navigate ve trang login
 function ProtectedRoute() {
@@ -88,6 +90,22 @@ export default function useRouteElements() {
           element: (
             <RegisterLayout>
               <Profile />
+            </RegisterLayout>
+          )
+        },
+        {
+          path: path.editor,
+          element: (
+            <RegisterLayout>
+              <EditorArticle />
+            </RegisterLayout>
+          )
+        },
+        {
+          path: path.settings,
+          element: (
+            <RegisterLayout>
+              <Settings />
             </RegisterLayout>
           )
         }
