@@ -56,37 +56,6 @@ export default function useRouteElements() {
       )
     },
     {
-      path: '',
-      element: <ProtectedRoute />,
-      children: [
-        {
-          path: path.profile,
-          element: (
-            <RegisterLayout>
-              <Profile />
-            </RegisterLayout>
-          )
-        }
-      ]
-    },
-
-    // {
-    //   path: path.login,
-    //   element: (
-    //     <RegisterLayout>
-    //       <Login />
-    //     </RegisterLayout>
-    //   )
-    // },
-    // {
-    //   path: path.register,
-    //   element: (
-    //     <RegisterLayout>
-    //       <Register />
-    //     </RegisterLayout>
-    //   )
-    // },
-    {
       path: '*',
       element: (
         <RegisterLayout>
@@ -109,6 +78,20 @@ export default function useRouteElements() {
           <ArticleDetail />
         </RegisterLayout>
       )
+    },
+    {
+      path: '',
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: path.profile,
+          element: (
+            <RegisterLayout>
+              <Profile />
+            </RegisterLayout>
+          )
+        }
+      ]
     }
   ])
 
