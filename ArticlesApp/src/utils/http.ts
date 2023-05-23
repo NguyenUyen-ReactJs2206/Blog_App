@@ -2,7 +2,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import HttpStatusCode from 'src/constants/httpStatusCode.enum'
 import { toast } from 'react-toastify'
-import { AuthResponse } from 'src/types/auth.type'
+import { AuthSuccess } from 'src/types/auth.type'
 import { clearTokenFromLs, getTokenFromLs, saveTokenToLS } from './auth'
 
 //Tai sao lai khai bao them 1 bien token lam gi?
@@ -41,10 +41,8 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         const { url } = response.config
-        const { user } = response.data
         if (url === '/users/login') {
-          this.accessToken = user.token
-          console.log(this.accessToken, 'this')
+          this.accessToken = (response.data as AuthSuccess).user.token
           saveTokenToLS(this.accessToken)
         }
         // else if (url === '/users/logout') {
