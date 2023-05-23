@@ -14,9 +14,9 @@ import { clearTokenFromLs, getTokenFromLs, saveTokenToLS } from './auth'
 //Khi lam ta chi can khoi tao Token moi khi vao App
 class Http {
   instance: AxiosInstance
-  private token: string
+  private accessToken: string
   constructor() {
-    this.token = getTokenFromLs()
+    this.accessToken = getTokenFromLs()
     this.instance = axios.create({
       baseURL: 'https://api.realworld.io/api/',
       timeout: 10000,
@@ -27,8 +27,8 @@ class Http {
     //Nhung API can header token ta phai truyen len
     this.instance.interceptors.request.use(
       (config) => {
-        if (this.token && config.headers) {
-          config.headers.Authorization = this.token
+        if (this.accessToken && config.headers) {
+          config.headers.Authorization = `Bearer ${this.accessToken}`
           return config
         }
         return config
@@ -40,14 +40,12 @@ class Http {
     //Muon xu ly loi tra ve thi su dung response, con xu ly loi gui len thi dung request
     this.instance.interceptors.response.use(
       (response) => {
-        console.log(response, 'rrrrrrrrrrrrrrrrrr')
-
         const { url } = response.config
-        console.log(url, 'uuuuuuuuuuuuuuuuuuuuuu')
+        const { user } = response.data
         if (url === '/users/login') {
-          this.token === (response.data as AuthResponse).user.token
-          saveTokenToLS(this.token)
-          console.log(this.token, 'ttttttttttttttt')
+          this.accessToken = user.token
+          console.log(this.accessToken, 'this')
+          saveTokenToLS(this.accessToken)
         }
         // else if (url === '/users/logout') {
         //   this.token = ''
