@@ -1,6 +1,5 @@
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { useContext } from 'react'
-import ListArticle from './pages/ListArticle'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import path from './constants/path'
@@ -11,6 +10,9 @@ import Profile from './pages/Profile'
 import { AppContext } from './contexts/app.context'
 import Settings from './pages/Settings'
 import NewArticle from './pages/NewArticle'
+import ListArticleLayout from './pages/ListArticle/layout/ListArticleLayout'
+import GlobalFeed from './pages/ListArticle/pages/GlobalFeed'
+import YourFeed from './pages/ListArticle/pages/YourFeed'
 
 //Neu da login thi cho tiep tuc vao, chua login thi navigate ve trang login
 function ProtectedRoute() {
@@ -53,7 +55,7 @@ export default function useRouteElements() {
       index: true,
       element: (
         <RegisterLayout>
-          <ListArticle />
+          <ListArticleLayout />
         </RegisterLayout>
       )
     },
@@ -69,7 +71,7 @@ export default function useRouteElements() {
       path: path.articles,
       element: (
         <RegisterLayout>
-          <ListArticle />
+          <ListArticleLayout />
         </RegisterLayout>
       )
     },
