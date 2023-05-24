@@ -8,7 +8,8 @@ module.exports = {
     extend: {
       colors: {
         green: '#5CB85C',
-        grayblack: '#333'
+        grayblack: '#333',
+        graybg: '#f3f3f3'
       }
     },
     boxShadow: {

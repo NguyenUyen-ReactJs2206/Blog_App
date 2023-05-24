@@ -34,12 +34,14 @@ export default function FormArticle() {
             className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
           />
         </div>
-        <button
-          type='button'
-          className='float-right rounded-md bg-green/80 px-4 py-3 text-xl text-gray-100 hover:bg-green hover:text-white'
-        >
-          Publiish Article
-        </button>
+        <div className='flex justify-end'>
+          <button
+            type='button'
+            className='rounded-md bg-green/80 px-4 py-3 text-xl text-gray-100 hover:bg-green hover:text-white'
+          >
+            Publiish Article
+          </button>
+        </div>
       </form>
     </div>
   )

@@ -16,9 +16,9 @@ export default function RegisterHeader() {
   return (
     <header className='py-3'>
       <div className='container'>
-        <div className='sm:mx-8'>
-          <nav className='flex flex-wrap justify-between  '>
-            <NavLink to={path.home} className='text-2xl font-bold text-green'>
+        <div className='mx-5 sm:mx-8'>
+          <nav className='flex flex-wrap justify-between '>
+            <NavLink to={path.home} className='mb-3 text-2xl font-bold text-green sm:mb-0'>
               conduit
             </NavLink>
             {!isAuthenticated && (
@@ -26,9 +26,9 @@ export default function RegisterHeader() {
                 <NavLink
                   to={path.home}
                   className={({ isActive }) =>
-                    classNames('text-md px-3 hover:text-black', {
+                    classNames('text-md  px-3 hover:text-black/80', {
                       'text-gray-400': !isActive,
-                      'text-black': isActive
+                      'text-black/80': isActive
                     })
                   }
                 >
@@ -37,9 +37,9 @@ export default function RegisterHeader() {
                 <NavLink
                   to={path.login}
                   className={({ isActive }) =>
-                    classNames('text-md px-3 hover:text-black', {
+                    classNames('text-md px-3 hover:text-black/80', {
                       'text-gray-400': !isActive,
-                      'text-black': isActive
+                      'text-black/80': isActive
                     })
                   }
                 >
@@ -48,9 +48,9 @@ export default function RegisterHeader() {
                 <NavLink
                   to={path.register}
                   className={({ isActive }) =>
-                    classNames('text-md px-3 hover:text-black', {
+                    classNames('text-md px-3 hover:text-black/80', {
                       'text-gray-400': !isActive,
-                      'text-black': isActive
+                      'text-black/80': isActive
                     })
                   }
                 >
@@ -63,9 +63,9 @@ export default function RegisterHeader() {
                 <NavLink
                   to={path.home}
                   className={({ isActive }) =>
-                    classNames('text-md mr-4 hover:text-black', {
+                    classNames('text-md mb-3 mr-4 hover:text-black/80 sm:mb-0', {
                       'text-gray-400': !isActive,
-                      'text-black': isActive
+                      'text-black/80': isActive
                     })
                   }
                 >
@@ -74,9 +74,9 @@ export default function RegisterHeader() {
                 <NavLink
                   to={path.editor}
                   className={({ isActive }) =>
-                    classNames('text-md mr-4 flex hover:text-black', {
+                    classNames('text-md mb-3 mr-4 flex hover:text-black/80 sm:mb-0', {
                       'text-gray-400': !isActive,
-                      'text-black': isActive
+                      'text-black/80': isActive
                     })
                   }
                 >
@@ -99,9 +99,9 @@ export default function RegisterHeader() {
                 <NavLink
                   to={path.settings}
                   className={({ isActive }) =>
-                    classNames('text-md mr-4 flex hover:text-black', {
+                    classNames('text-md mb-3  mr-4 flex hover:text-black/80 sm:mb-0', {
                       'text-gray-400': !isActive,
-                      'text-black': isActive
+                      'text-black/80': isActive
                     })
                   }
                 >
@@ -125,9 +125,9 @@ export default function RegisterHeader() {
                 <NavLink
                   to={path.profile}
                   className={({ isActive }) =>
-                    classNames('text-md mr-4 flex hover:text-black', {
+                    classNames('text-md mb-3 mr-4  flex hover:text-black/80 sm:mb-0', {
                       'text-gray-400': !isActive,
-                      'text-black': isActive
+                      'text-black/80': isActive
                     })
                   }
                 >
@@ -140,7 +140,11 @@ export default function RegisterHeader() {
                   </div>
                   <span>Name</span>
                 </NavLink>
-                <Link to='/' className='text-md mr-4 flex text-gray-400 hover:text-black' onClick={handleLogout}>
+                <Link
+                  to='/'
+                  className='text-md  mb-3 mr-4 flex text-gray-400 hover:text-black/80 sm:mb-0'
+                  onClick={handleLogout}
+                >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
