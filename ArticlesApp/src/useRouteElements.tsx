@@ -11,8 +11,6 @@ import { AppContext } from './contexts/app.context'
 import Settings from './pages/Settings'
 import NewArticle from './pages/NewArticle'
 import ListArticleLayout from './pages/ListArticle/layout/ListArticleLayout'
-import GlobalFeed from './pages/ListArticle/pages/GlobalFeed'
-import YourFeed from './pages/ListArticle/pages/YourFeed'
 
 //Neu da login thi cho tiep tuc vao, chua login thi navigate ve trang login
 function ProtectedRoute() {
