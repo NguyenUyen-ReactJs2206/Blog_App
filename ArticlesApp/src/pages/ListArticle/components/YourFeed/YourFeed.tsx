@@ -1,3 +1,3 @@
 export default function YourFeed() {
-  return <div className='min-h-[90vh]'>YourFeed</div>
+  return <div className='my-5 px-4'>No articles are here... yet.</div>
 }
