@@ -11,6 +11,10 @@ export interface SuccessArticleDetail<ListArticle> {
   article: ListArticle
 }
 
+export interface PostArticleSuccess<ListArticle> {
+  article: ListArticle
+}
+
 export interface ErrorUnprocessableEntityMessage {
   errors: {
     email: string[]
