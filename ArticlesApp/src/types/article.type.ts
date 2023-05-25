@@ -21,6 +21,7 @@ export type ListArticle = {
 export interface ArticleListConfig {
   limit?: number | string
   offset?: number | string
+  tag?: string
 }
 export type ArticleList = SuccessArticle<ListArticle>
 

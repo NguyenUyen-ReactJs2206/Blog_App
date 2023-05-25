@@ -10,7 +10,7 @@ import Profile from './pages/Profile'
 import { AppContext } from './contexts/app.context'
 import Settings from './pages/Settings'
 import NewArticle from './pages/NewArticle'
-import ListArticleLayout from './pages/ListArticle/layout/ListArticleLayout'
+import ListArticle from './pages/ListArticle/ListArticle'
 
 //Neu da login thi cho tiep tuc vao, chua login thi navigate ve trang login
 function ProtectedRoute() {
@@ -53,7 +53,7 @@ export default function useRouteElements() {
       index: true,
       element: (
         <RegisterLayout>
-          <ListArticleLayout />
+          <ListArticle />
         </RegisterLayout>
       )
     },
@@ -69,7 +69,7 @@ export default function useRouteElements() {
       path: path.articles,
       element: (
         <RegisterLayout>
-          <ListArticleLayout />
+          <ListArticle />
         </RegisterLayout>
       )
     },
