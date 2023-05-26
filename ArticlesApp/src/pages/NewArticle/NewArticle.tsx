@@ -6,12 +6,7 @@ import { toast } from 'react-toastify'
 type PostArticle = Pick<ListArticle, 'title' | 'description' | 'body' | 'tagList'>
 export default function NewArticle() {
   // const [myArticles, setMyArticles] = useState([])
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors }
-  } = useForm<PostArticle>()
+  const { register, handleSubmit } = useForm<PostArticle>()
 
   const postArticle = (body: any) => {
     const controller = new AbortController()

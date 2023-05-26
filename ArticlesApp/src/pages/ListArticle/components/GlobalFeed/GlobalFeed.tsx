@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getArticles } from 'src/apis/article.api'
 import Pagination from 'src/components/Pagination.tsx'
 import SkeletonPost from 'src/components/SkeletonPost'
 import { PAGINATION, PaginationType } from 'src/constants/pagination'
@@ -9,13 +8,19 @@ import path from 'src/constants/path'
 import { formatDate } from 'src/helpers/formatDate'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { RootState, useAppDispatch } from 'src/store'
-import { ArticleList, ArticleListConfig } from 'src/types/article.type'
-import { getArticleList } from 'src/useslice/articles.slice'
+import { ArticleListConfig } from 'src/types/article.type'
+import { deleteFavoriteArticleThunk, getArticleListThunk, postFavoritedArticleThunk } from 'src/useslice/articles.slice'
 
 export default function GlobalFeed() {
-  // const [articles, setArticles] = useState<ArticleList>()
   const articleList = useSelector((state: RootState) => state.articlesReducer.articleList)
-  console.log(articleList, 'aaaaaaaaaaaaaaaaaaaaaaa')
+  const favoritesArticle = useSelector((state: RootState) => state.articlesReducer.favoritesArticle)
+  const unFavoritedArticle = useSelector((state: RootState) => state.articlesReducer.unFavoritedArticle)
+
+  console.log(favoritesArticle, 'innnnnnnnnnnnnnnnnn')
+  console.log(unFavoritedArticle, 'unnnnnnnnnnnnnnn')
+
+  // const [isFavorited, setIsFavorited] = useState(false)
+
   //pagination
   const [pagination, setPagination] = useState<PaginationType>({
     limit: PAGINATION.LIMIT,
@@ -34,7 +39,7 @@ export default function GlobalFeed() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const promise = dispatch(getArticleList(queryConfig))
+    const promise = dispatch(getArticleListThunk(queryConfig))
     setPagination((prev) => ({
       ...prev,
       totalPage: Math.ceil(Number(articleList.articlesCount) / PAGINATION.LIMIT)
@@ -47,11 +52,18 @@ export default function GlobalFeed() {
   const onChangePage = (page: number) => {
     setPagination((pagina) => ({ ...pagina, currentPage: page }))
   }
+
+  const handleFavorite = (nameId: string) => {
+    const promise = dispatch(deleteFavoriteArticleThunk(nameId))
+    return () => {
+      promise.abort()
+    }
+  }
   return (
     <div className=''>
       {articleList.articles.length === 0 && <SkeletonPost />}
-      {articleList?.articles.map((article, index) => (
-        <div className='border-t border-gray-200 py-3' key={index}>
+      {articleList?.articles.map((article) => (
+        <div className='border-t border-gray-200 py-3' key={article.slug}>
           <div className='flex justify-between py-3'>
             <div className='flex justify-start'>
               <div className='mr-2 h-11 w-11 flex-shrink-0 '>
@@ -67,7 +79,10 @@ export default function GlobalFeed() {
               </div>
             </div>
             <div className='justify-end'>
-              <div className='mr-4 flex cursor-pointer rounded-sm border border-green stroke-none px-2 py-1 text-center text-green hover:bg-green hover:text-white'>
+              <button
+                className='mr-4 flex cursor-pointer rounded-sm border border-green stroke-none px-2 py-1 text-center text-green hover:bg-green hover:text-white'
+                onClick={() => handleFavorite(article.slug)}
+              >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -83,7 +98,7 @@ export default function GlobalFeed() {
                   />
                 </svg>
                 <span>{article.favoritesCount}</span>
-              </div>
+              </button>
             </div>
           </div>
           <Link to={`${path.articles}/${article.slug}`}>

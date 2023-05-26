@@ -1,40 +1,22 @@
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
-import { getArticleDetail } from 'src/apis/article.api'
 import SkeletonArticleDetail from 'src/components/SkeletonArticleDetail'
 import path from 'src/constants/path'
 import { formatDate } from 'src/helpers/formatDate'
-import { ArticleDetails } from 'src/types/article.type'
+import { RootState, useAppDispatch } from 'src/store'
+
+import { getArticleDetailThunk } from 'src/useslice/articles.slice'
 
 export default function ArticleDetail() {
-  const [articleDetail, setArticleDetail] = useState<ArticleDetails>()
+  const articleDetail = useSelector((state: RootState) => state.articlesReducer.articleDetail)
   const { nameId } = useParams()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const controller = new AbortController()
-    getArticleDetail(nameId as string, controller.signal)
-      .then((res) => {
-        const articleDetailResult = res.data
-        console.log(articleDetailResult, 'aaaaaaaaaaaaa')
-        setArticleDetail(articleDetailResult)
-
-        dispatch({
-          type: 'article/getArticleDetail',
-          payload: articleDetailResult
-        })
-      })
-      .catch((error) => {
-        // if (!(error.code === 'ERR_CANCELED')) {
-        //   dispatch({
-        //     type: 'article/getArticleDetailFailed',
-        //     payload: error
-        //   })
-        // }
-      })
+    const promise = dispatch(getArticleDetailThunk(nameId as string))
     return () => {
-      controller.abort()
+      promise.abort()
     }
   }, [nameId, dispatch])
 
