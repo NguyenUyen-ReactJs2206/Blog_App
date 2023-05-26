@@ -4,7 +4,7 @@ export interface SuccessResponseApi<UserData> {
 
 export interface SuccessArticle<ListArticle> {
   articles: ListArticle[]
-  articlesCount: number
+  articlesCount: number | string
 }
 
 export interface SuccessArticleDetail<ListArticle> {

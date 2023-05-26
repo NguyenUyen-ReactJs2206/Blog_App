@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getArticles } from 'src/apis/article.api'
 import Pagination from 'src/components/Pagination.tsx'
@@ -8,11 +8,14 @@ import { PAGINATION, PaginationType } from 'src/constants/pagination'
 import path from 'src/constants/path'
 import { formatDate } from 'src/helpers/formatDate'
 import useQueryParams from 'src/hooks/useQueryParams'
+import { RootState, useAppDispatch } from 'src/store'
 import { ArticleList, ArticleListConfig } from 'src/types/article.type'
+import { getArticleList } from 'src/useslice/articles.slice'
 
 export default function GlobalFeed() {
-  const [articles, setArticles] = useState<ArticleList>()
-
+  // const [articles, setArticles] = useState<ArticleList>()
+  const articleList = useSelector((state: RootState) => state.articlesReducer.articleList)
+  console.log(articleList, 'aaaaaaaaaaaaaaaaaaaaaaa')
   //pagination
   const [pagination, setPagination] = useState<PaginationType>({
     limit: PAGINATION.LIMIT,
@@ -28,45 +31,26 @@ export default function GlobalFeed() {
     }),
     [queryParams.limit, queryParams.offset, pagination.currentPage]
   )
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const controller = new AbortController()
-    getArticles(queryConfig, controller.signal)
-      .then((res) => {
-        const articleListResult = res.data
-        setArticles(articleListResult)
-        setPagination((prev) => ({
-          ...prev,
-          totalPage: Math.ceil(res?.data.articlesCount / PAGINATION.LIMIT)
-        }))
-
-        dispatch({
-          type: 'article/getListArticleSuccess',
-          payload: articleListResult
-        })
-      })
-      //khi abort ko muon dispatch len
-      .catch((error) => {
-        // if (!(error.code === 'ERR_CANCELED')) {
-        //   dispatch({
-        //     type: 'article/getListArticleFaild',
-        //     payload: error
-        //   })
-        // }
-      })
+    const promise = dispatch(getArticleList(queryConfig))
+    setPagination((prev) => ({
+      ...prev,
+      totalPage: Math.ceil(Number(articleList.articlesCount) / PAGINATION.LIMIT)
+    }))
     return () => {
-      controller.abort()
+      promise.abort()
     }
-  }, [queryConfig, dispatch])
+  }, [queryConfig, dispatch, articleList.articlesCount])
 
   const onChangePage = (page: number) => {
     setPagination((pagina) => ({ ...pagina, currentPage: page }))
   }
   return (
     <div className=''>
-      {!articles && <SkeletonPost />}
-      {articles?.articles.map((article, index) => (
+      {articleList.articles.length === 0 && <SkeletonPost />}
+      {articleList?.articles.map((article, index) => (
         <div className='border-t border-gray-200 py-3' key={index}>
           <div className='flex justify-between py-3'>
             <div className='flex justify-start'>
@@ -123,7 +107,9 @@ export default function GlobalFeed() {
           </div>
         </div>
       ))}
-      <Pagination onChangePage={onChangePage} queryConfig={queryConfig} pagination={pagination} />
+      {articleList.articles.length !== 0 && (
+        <Pagination onChangePage={onChangePage} queryConfig={queryConfig} pagination={pagination} />
+      )}
     </div>
   )
 }
