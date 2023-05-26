@@ -2,8 +2,11 @@ const path = {
   home: '/',
   login: '/login',
   register: '/register',
-  articles: '/articles',
-  articleDetail: ':nameId',
+  articles: '/article',
+  globalFeed: '/article/globalfeed',
+  yourFeed: '/article/feed',
+  tag: '/:tag',
+  articleDetail: '/:nameId',
   editor: '/editor',
   settings: '/settings',
   profile: '/profiles'

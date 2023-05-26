@@ -10,7 +10,10 @@ import Profile from './pages/Profile'
 import { AppContext } from './contexts/app.context'
 import Settings from './pages/Settings'
 import NewArticle from './pages/NewArticle'
-import ListArticle from './pages/ListArticle/ListArticle'
+import ListArticleLayout from './pages/ListArticle/layouts/ListArticleLayout'
+import YourFeed from './pages/ListArticle/components/YourFeed'
+import GlobalFeed from './pages/ListArticle/components/GlobalFeed'
+import TagList from './pages/ListArticle/components/TagList'
 
 //Neu da login thi cho tiep tuc vao, chua login thi navigate ve trang login
 function ProtectedRoute() {
@@ -53,7 +56,39 @@ export default function useRouteElements() {
       index: true,
       element: (
         <RegisterLayout>
-          <ListArticle />
+          <ListArticleLayout>
+            <GlobalFeed />
+          </ListArticleLayout>
+        </RegisterLayout>
+      )
+    },
+    {
+      path: path.yourFeed,
+      index: true,
+      element: (
+        <RegisterLayout>
+          <ListArticleLayout>
+            <YourFeed />
+          </ListArticleLayout>
+        </RegisterLayout>
+      )
+    },
+    {
+      path: '',
+      index: true,
+      element: (
+        <RegisterLayout>
+          <ListArticleLayout>
+            <TagList />
+          </ListArticleLayout>
+        </RegisterLayout>
+      )
+    },
+    {
+      path: path.articles,
+      element: (
+        <RegisterLayout>
+          <ListArticleLayout />
         </RegisterLayout>
       )
     },
@@ -66,15 +101,8 @@ export default function useRouteElements() {
       )
     },
     {
-      path: path.articles,
-      element: (
-        <RegisterLayout>
-          <ListArticle />
-        </RegisterLayout>
-      )
-    },
-    {
-      path: path.articleDetail,
+      path: `${path.articles}${path.articleDetail}`,
+      index: true,
       element: (
         <RegisterLayout>
           <ArticleDetail />
