@@ -11,6 +11,7 @@ export const getArticleDetail = (id: string, signal: AbortSignal) =>
 
 export const getArticlesFeed = (params: ArticleListConfig, signal: AbortSignal) =>
   http.get<ArticleList>(`${URL}/feed`, { params, signal: signal })
+
 //Async Thunk
 // export const getArticles = (params: ArticleListConfig, signal: AbortSignal) =>
 // http.get<ArticleList>(`articles/?limit=${params.limit}&offset=${params.offset}`, { signal: signal })

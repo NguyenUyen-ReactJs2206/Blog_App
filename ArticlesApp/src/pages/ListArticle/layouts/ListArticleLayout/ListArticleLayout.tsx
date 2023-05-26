@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, createSearchParams } from 'react-router-dom'
 import Banner from 'src/components/Banner'
 import path from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
@@ -23,7 +23,16 @@ export default function ListArticleLayout({ children }: Props) {
               <div className='md:col-span-9'>
                 <div className='border-b border-b-gray-300 '>
                   <div className=' flex'>
-                    <NavLink to={path.home} className='border-b-2 border-b-green px-4 py-2 text-green '>
+                    <NavLink
+                      to={{
+                        pathname: path.home,
+                        search: createSearchParams({
+                          limit: '10',
+                          offset: '0'
+                        }).toString()
+                      }}
+                      className='border-b-2 border-b-green px-4 py-2 text-green '
+                    >
                       Global Feed
                     </NavLink>
                   </div>
@@ -47,7 +56,13 @@ export default function ListArticleLayout({ children }: Props) {
                       Your Feed
                     </NavLink>
                     <NavLink
-                      to={path.home}
+                      to={{
+                        pathname: path.home,
+                        search: createSearchParams({
+                          limit: '10',
+                          offset: '0'
+                        }).toString()
+                      }}
                       className={({ isActive }) =>
                         classNames('text-md mb-3 mr-4 flex px-6 hover:text-black/80 sm:mb-0', {
                           'text-gray-400': !isActive,
@@ -56,17 +71,6 @@ export default function ListArticleLayout({ children }: Props) {
                       }
                     >
                       Global Feed
-                    </NavLink>
-                    <NavLink
-                      to={path.tag}
-                      className={({ isActive }) =>
-                        classNames('text-md mb-3 mr-4 flex px-6 hover:text-black/80 sm:mb-0', {
-                          'text-gray-400': !isActive,
-                          'border-b-2 border-b-green text-green': isActive
-                        })
-                      }
-                    >
-                      Tag
                     </NavLink>
                   </div>
                 </div>

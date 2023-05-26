@@ -18,7 +18,7 @@ export default function RegisterHeader() {
       <div className='container'>
         <div className='mx-5 sm:mx-8'>
           <nav className='flex flex-wrap justify-between '>
-            <NavLink to={path.home} className='mb-3 text-2xl font-bold text-green sm:mb-0'>
+            <NavLink to={path.home} end className='mb-3 text-2xl font-bold text-green sm:mb-0'>
               conduit
             </NavLink>
             {!isAuthenticated && (

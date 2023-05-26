@@ -13,8 +13,6 @@ import NewArticle from './pages/NewArticle'
 import ListArticleLayout from './pages/ListArticle/layouts/ListArticleLayout'
 import YourFeed from './pages/ListArticle/components/YourFeed'
 import GlobalFeed from './pages/ListArticle/components/GlobalFeed'
-import TagList from './pages/ListArticle/components/TagList'
-
 //Neu da login thi cho tiep tuc vao, chua login thi navigate ve trang login
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -73,25 +71,7 @@ export default function useRouteElements() {
         </RegisterLayout>
       )
     },
-    {
-      path: '',
-      index: true,
-      element: (
-        <RegisterLayout>
-          <ListArticleLayout>
-            <TagList />
-          </ListArticleLayout>
-        </RegisterLayout>
-      )
-    },
-    {
-      path: path.articles,
-      element: (
-        <RegisterLayout>
-          <ListArticleLayout />
-        </RegisterLayout>
-      )
-    },
+
     {
       path: '*',
       element: (

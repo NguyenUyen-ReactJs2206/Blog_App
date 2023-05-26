@@ -17,7 +17,7 @@ export default function Pagination({ onChangePage, pagination, queryConfig }: Pr
     items.push(
       <NavLink
         to={{
-          pathname: path.articles,
+          pathname: path.home,
           search: createSearchParams({
             ...queryConfig,
             limit: pagination.limit.toString(),
@@ -45,7 +45,7 @@ export default function Pagination({ onChangePage, pagination, queryConfig }: Pr
       ) : (
         <NavLink
           to={{
-            pathname: path.articles,
+            pathname: path.home,
             search: createSearchParams({
               ...queryConfig,
               limit: pagination.limit.toString(),
@@ -72,7 +72,7 @@ export default function Pagination({ onChangePage, pagination, queryConfig }: Pr
       ) : (
         <NavLink
           to={{
-            pathname: path.articles,
+            pathname: path.home,
             search: createSearchParams({
               ...queryConfig,
               limit: pagination.limit.toString(),
