@@ -1,7 +1,12 @@
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
+import { useContext } from 'react'
+import FavoritedArticles from './page/FavoritedArticles'
+import { AppContext } from 'src/contexts/app.context'
 
 export default function Profile() {
+  const { profile } = useContext(AppContext)
+  console.log(profile, 'ppppppppppppppppppppppppppppppppppppppp')
   return (
     <div className='min-h-[90vh]'>
       <div className='bg-graybg py-2'>
@@ -12,13 +17,13 @@ export default function Profile() {
                 <div className='flex flex-col items-center justify-center p-2'>
                   <div className='h-24 w-24 flex-shrink-0  items-center justify-center text-center'>
                     <img
-                      src='https://nhanvietluanvan.com/wp-content/uploads/2023/05/568603cbd1860c67bf8f6776cbe7f885.jpg'
+                      src={profile?.image}
                       alt='avatar'
                       className='h-full w-full rounded-full bg-current object-cover'
                     />
                   </div>
-                  <div className='mt-2 text-xl font-bold capitalize'>Name</div>
-                  <div className='text-md mt-2 text-gray-400'>Biooooooo</div>
+                  <div className='mt-2 text-xl font-bold capitalize'>{profile?.username}</div>
+                  <div className='text-md mt-2 text-gray-400'>{profile?.bio}</div>
                 </div>
                 <div className='mt-4 flex justify-end text-gray-500'>
                   <Link
@@ -46,6 +51,9 @@ export default function Profile() {
                 </div>
               </div>
             </div>
+          </div>
+          <div className='py-10'>
+            <FavoritedArticles />
           </div>
         </div>
       </div>

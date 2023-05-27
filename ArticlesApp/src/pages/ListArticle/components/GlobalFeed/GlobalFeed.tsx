@@ -9,17 +9,11 @@ import { formatDate } from 'src/helpers/formatDate'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { RootState, useAppDispatch } from 'src/store'
 import { ArticleListConfig } from 'src/types/article.type'
-import { deleteFavoriteArticleThunk, getArticleListThunk, postFavoritedArticleThunk } from 'src/useslice/articles.slice'
+import { getArticleListThunk, postFavoritedArticleThunk } from 'src/useslice/articles.slice'
 
 export default function GlobalFeed() {
   const articleList = useSelector((state: RootState) => state.articlesReducer.articleList)
   const favoritesArticle = useSelector((state: RootState) => state.articlesReducer.favoritesArticle)
-  const unFavoritedArticle = useSelector((state: RootState) => state.articlesReducer.unFavoritedArticle)
-
-  console.log(favoritesArticle, 'innnnnnnnnnnnnnnnnn')
-  console.log(unFavoritedArticle, 'unnnnnnnnnnnnnnn')
-
-  // const [isFavorited, setIsFavorited] = useState(false)
 
   //pagination
   const [pagination, setPagination] = useState<PaginationType>({
@@ -54,7 +48,7 @@ export default function GlobalFeed() {
   }
 
   const handleFavorite = (nameId: string) => {
-    const promise = dispatch(deleteFavoriteArticleThunk(nameId))
+    const promise = dispatch(postFavoritedArticleThunk(nameId))
     return () => {
       promise.abort()
     }
@@ -80,7 +74,11 @@ export default function GlobalFeed() {
             </div>
             <div className='justify-end'>
               <button
-                className='mr-4 flex cursor-pointer rounded-sm border border-green stroke-none px-2 py-1 text-center text-green hover:bg-green hover:text-white'
+                className={
+                  article.favorited === false
+                    ? 'mr-4 flex cursor-pointer rounded-sm border border-green bg-white stroke-none px-2 py-1 text-center text-green hover:bg-green hover:text-white'
+                    : 'mr-4 flex cursor-pointer rounded-sm border border-green bg-green stroke-none px-2 py-1 text-center text-white'
+                }
                 onClick={() => handleFavorite(article.slug)}
               >
                 <svg

@@ -3,13 +3,14 @@ import { useContext } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
-import { clearTokenFromLs } from 'src/utils/auth'
+import { clearLS } from 'src/utils/auth'
 
 export default function RegisterHeader() {
-  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  const { isAuthenticated, setIsAuthenticated, profile } = useContext(AppContext)
   const navigate = useNavigate()
   const handleLogout = () => {
-    clearTokenFromLs()
+    clearLS()
+    window.location.reload()
     navigate('/')
     setIsAuthenticated(false)
   }
@@ -133,12 +134,12 @@ export default function RegisterHeader() {
                 >
                   <div className='mr-2 h-6 w-6 flex-shrink-0'>
                     <img
-                      src='https://nhanvietluanvan.com/wp-content/uploads/2023/05/568603cbd1860c67bf8f6776cbe7f885.jpg'
+                      src={profile?.image}
                       alt='avatar'
                       className='h-full w-full  rounded-full bg-current object-cover'
                     />
                   </div>
-                  <span>Name</span>
+                  <span>{profile?.username}</span>
                 </NavLink>
                 <Link
                   to='/'
