@@ -7,12 +7,12 @@ import { FavoritedType } from 'src/types/favorite.type'
 interface ArticleState {
   articleList: ArticleList
   articleDetail: ArticleDetails | null
-  favoritesArticle: FavoritedType[]
+  isFavorites: boolean
 }
 const initialState: ArticleState = {
   articleList: { articles: [], articlesCount: '' },
   articleDetail: null,
-  favoritesArticle: []
+  isFavorites: false
 }
 //Get List Article
 export const getArticleListThunk = createAsyncThunk('articles/getArticleList', async (params: any, thunkAPI) => {
@@ -47,7 +47,7 @@ export const postFavoritedArticleThunk = createAsyncThunk('articles/favorited', 
 export const deleteFavoriteArticleThunk = createAsyncThunk('blog/deleteFavorite', async (id: string, thunkAPI) => {
   const response = await deleteFavoritedArticle(id, thunkAPI.signal)
   console.log(response, 'Deleteeee')
-  return id
+  return response.data
 })
 
 const articlesSlice = createSlice({
@@ -63,10 +63,26 @@ const articlesSlice = createSlice({
         state.articleDetail = action.payload
       }),
       buider.addCase(postFavoritedArticleThunk.fulfilled, (state, action) => {
-        state.favoritesArticle.push(action.payload)
+        //id truyen vao or postId= action.payload.article.slug
+        const postId = action.meta.arg
+        //Tim vi tri cua article muon favorite
+        const articleIndex = state.articleList.articles.find((article) => article.slug === postId)
+        // Neu dung vi tri article va favorited=false thi chuyen no thanh true va tang so luong count favorite len 1
+        if (articleIndex && !articleIndex.favorited) {
+          articleIndex.favorited = true
+          articleIndex.favoritesCount++
+        }
       }),
       buider.addCase(deleteFavoriteArticleThunk.fulfilled, (state, action) => {
-        state.favoritesArticle.filter((favorite) => favorite.article.slug !== action.payload)
+        //id truyen vao or postId= action.payload.article.slug
+        const postId = action.meta.arg
+        //Tim vi tri cua article muon favorite
+        const articleIndex = state.articleList.articles.find((article) => article.slug === postId)
+        // Neu dung vi tri article va favorited=false thi chuyen no thanh true va tang so luong count favorite len 1
+        if (articleIndex && articleIndex.favorited) {
+          articleIndex.favorited = false
+          articleIndex.favoritesCount--
+        }
       })
   }
 })

@@ -47,7 +47,7 @@ export default function ListArticleLayout({ children }: Props) {
                     <NavLink
                       to={path.yourFeed}
                       className={({ isActive }) =>
-                        classNames('text-md mb-3 mr-4 flex px-6 hover:text-black/80 sm:mb-0', {
+                        classNames('text-md  mr-4 flex px-6 hover:text-black/80 sm:mb-0', {
                           'text-gray-400': !isActive,
                           'border-b-2 border-b-green text-green': isActive
                         })
@@ -64,7 +64,7 @@ export default function ListArticleLayout({ children }: Props) {
                         }).toString()
                       }}
                       className={({ isActive }) =>
-                        classNames('text-md mb-3 mr-4 flex px-6 hover:text-black/80 sm:mb-0', {
+                        classNames('text-md mr-4 flex px-6 hover:text-black/80 sm:mb-0', {
                           'text-gray-400': !isActive,
                           'border-b-2 border-b-green text-green': isActive
                         })

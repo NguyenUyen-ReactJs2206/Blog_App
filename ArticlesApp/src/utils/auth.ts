@@ -1,6 +1,6 @@
 import { User } from 'src/types/user.type'
 
-export const LocalStorageEventTarget = new EventTarget()
+// export const LocalStorageEventTarget = new EventTarget()
 
 export const saveTokenToLS = (token: string) => {
   localStorage.setItem('access_token', token)

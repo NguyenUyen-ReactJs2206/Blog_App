@@ -9,11 +9,10 @@ import { formatDate } from 'src/helpers/formatDate'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { RootState, useAppDispatch } from 'src/store'
 import { ArticleListConfig } from 'src/types/article.type'
-import { getArticleListThunk, postFavoritedArticleThunk } from 'src/useslice/articles.slice'
+import { deleteFavoriteArticleThunk, getArticleListThunk, postFavoritedArticleThunk } from 'src/useslice/articles.slice'
 
 export default function GlobalFeed() {
   const articleList = useSelector((state: RootState) => state.articlesReducer.articleList)
-  const favoritesArticle = useSelector((state: RootState) => state.articlesReducer.favoritesArticle)
 
   //pagination
   const [pagination, setPagination] = useState<PaginationType>({
@@ -47,8 +46,15 @@ export default function GlobalFeed() {
     setPagination((pagina) => ({ ...pagina, currentPage: page }))
   }
 
-  const handleFavorite = (nameId: string) => {
+  const handleAddFavorite = (nameId: string) => {
     const promise = dispatch(postFavoritedArticleThunk(nameId))
+    return () => {
+      promise.abort()
+    }
+  }
+
+  const handleRemoveFavorite = (nameId: string) => {
+    const promise = dispatch(deleteFavoriteArticleThunk(nameId))
     return () => {
       promise.abort()
     }
@@ -79,7 +85,9 @@ export default function GlobalFeed() {
                     ? 'mr-4 flex cursor-pointer rounded-sm border border-green bg-white stroke-none px-2 py-1 text-center text-green hover:bg-green hover:text-white'
                     : 'mr-4 flex cursor-pointer rounded-sm border border-green bg-green stroke-none px-2 py-1 text-center text-white'
                 }
-                onClick={() => handleFavorite(article.slug)}
+                onClick={() => {
+                  !article.favorited ? handleAddFavorite(article.slug) : handleRemoveFavorite(article.slug)
+                }}
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'

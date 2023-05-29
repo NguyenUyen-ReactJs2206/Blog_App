@@ -3,7 +3,7 @@ export default function SkeletonPost() {
     <>
       <div
         role='status'
-        className='shadow w-full animate-pulse space-y-3 divide-y divide-gray-200 rounded border border-b-0 border-l-0 border-r-0 border-gray-200 py-4  dark:divide-gray-700 dark:border-gray-700 md:py-6'
+        className='shadow w-full animate-pulse space-y-3 divide-y divide-gray-200 border border-b-0 border-l-0 border-r-0 border-gray-200 py-4  dark:divide-gray-700 dark:border-gray-700 md:py-6'
       >
         <div className='flex items-center justify-between'>
           <div className='mt-2 flex items-center space-x-3'>
