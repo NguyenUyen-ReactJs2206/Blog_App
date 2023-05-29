@@ -52,17 +52,6 @@ export default function useRouteElements() {
       ]
     },
     {
-      path: '',
-      index: true,
-      element: (
-        <RegisterLayout>
-          <ListArticleLayout>
-            <GlobalFeed />
-          </ListArticleLayout>
-        </RegisterLayout>
-      )
-    },
-    {
       path: path.yourFeed,
       index: true,
       element: (
@@ -73,6 +62,18 @@ export default function useRouteElements() {
         </RegisterLayout>
       )
     },
+    {
+      path: '',
+      index: true,
+      element: (
+        <RegisterLayout>
+          <ListArticleLayout>
+            <GlobalFeed />
+          </ListArticleLayout>
+        </RegisterLayout>
+      )
+    },
+
     {
       path: '*',
       element: (

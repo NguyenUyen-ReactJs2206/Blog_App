@@ -1,7 +1,6 @@
-import { Link, NavLink, createSearchParams } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import path from 'src/constants/path'
 import { useContext } from 'react'
-import FavoritedArticles from './page/FavoritedArticles'
 import { AppContext } from 'src/contexts/app.context'
 import classNames from 'classnames'
 

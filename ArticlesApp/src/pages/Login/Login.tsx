@@ -31,6 +31,7 @@ export default function Login() {
         toast.success('Login successful!', {
           autoClose: 1000
         })
+        window.location.reload()
         setIsAuthenticated(true)
         navigate('/')
       })
@@ -39,6 +40,7 @@ export default function Login() {
         if (isAxiosForbiddenError<ErrorForbiddenMessage>(error)) {
           const formError = error.response?.data.errors
           console.log(formError, 'ffffffffffffffffff')
+
           if (formError?.['email or password']) {
             setError('email', {
               message: `Email or password ${formError['email or password']}`,

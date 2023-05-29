@@ -32,6 +32,7 @@ export default function Register() {
         })
         setIsAuthenticated(true)
         navigate('/')
+        window.location.reload()
       })
       //Khi loi 422 thi show error
       .catch((error) => {
