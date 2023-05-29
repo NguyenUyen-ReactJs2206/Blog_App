@@ -1,12 +1,17 @@
-import { Link } from 'react-router-dom'
+import { Link, NavLink, createSearchParams } from 'react-router-dom'
 import path from 'src/constants/path'
 import { useContext } from 'react'
 import FavoritedArticles from './page/FavoritedArticles'
 import { AppContext } from 'src/contexts/app.context'
+import classNames from 'classnames'
 
-export default function Profile() {
+interface Props {
+  children?: React.ReactNode
+}
+
+export default function Profile({ children }: Props) {
   const { profile } = useContext(AppContext)
-  console.log(profile, 'ppppppppppppppppppppppppppppppppppppppp')
+
   return (
     <div className='min-h-[90vh]'>
       <div className='bg-graybg py-2'>
@@ -52,9 +57,38 @@ export default function Profile() {
               </div>
             </div>
           </div>
-          <div className='py-10'>
-            <FavoritedArticles />
+        </div>
+      </div>
+      <div className='container'>
+        <div className='xl:mx-30 mx-0 my-6 sm:mx-10 md:mx-20'>
+          <div className='border-b border-b-gray-300 '>
+            <div className='flex'>
+              <NavLink
+                to={path.profile}
+                end
+                className={({ isActive }) =>
+                  classNames('text-md mr-4 flex px-6 py-2 hover:text-black/80 sm:mb-0', {
+                    'text-gray-400': !isActive,
+                    'border-b-2 border-b-green text-green': isActive
+                  })
+                }
+              >
+                My Articles
+              </NavLink>
+              <NavLink
+                to={path.favoritedArticle}
+                className={({ isActive }) =>
+                  classNames('text-md mr-4 flex px-6 py-2 hover:text-black/80 sm:mb-0', {
+                    'text-gray-400': !isActive,
+                    'border-b-2 border-b-green text-green': isActive
+                  })
+                }
+              >
+                Favorited Articles
+              </NavLink>
+            </div>
           </div>
+          {children}
         </div>
       </div>
     </div>

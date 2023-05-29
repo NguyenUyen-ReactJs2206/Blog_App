@@ -2,7 +2,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { deleteFavoritedArticle, favoritedArticle, getArticleDetail, getArticles } from 'src/apis/article.api'
 import { ArticleDetails, ArticleList } from 'src/types/article.type'
-import { FavoritedType } from 'src/types/favorite.type'
 
 interface ArticleState {
   articleList: ArticleList

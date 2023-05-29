@@ -9,7 +9,8 @@ const path = {
   articleDetail: '/:nameId',
   editor: '/editor',
   settings: '/settings',
-  profile: '/profiles'
+  profile: '/profiles',
+  favoritedArticle: '/profiles/favorites'
 } as const
 
 export default path
