@@ -23,6 +23,7 @@ export const getArticleListThunk = createAsyncThunk('articles/getArticleList', a
 //Get ArticleDetail
 export const getArticleDetailThunk = createAsyncThunk('articles/getArticleDetail', async (id: string, thunkAPI) => {
   const response = await getArticleDetail(id, thunkAPI.signal)
+  console.log(response.data, 'rrrrrrrrrrrrrrrrrr')
   return response.data
 })
 

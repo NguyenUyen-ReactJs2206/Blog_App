@@ -34,7 +34,6 @@ export default function Login() {
         navigate('/')
         window.location.reload()
         setIsAuthenticated(true)
-        
       })
       //Khi loi 422 thi show error
       .catch((error) => {

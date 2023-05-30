@@ -15,6 +15,7 @@ import YourFeed from './pages/ListArticle/components/YourFeed'
 import GlobalFeed from './pages/ListArticle/components/GlobalFeed'
 import MyArticle from './pages/Profile/page/MyArticle'
 import FavoritedArticles from './pages/Profile/page/FavoritedArticles'
+
 //Neu da login thi cho tiep tuc vao, chua login thi navigate ve trang login
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
