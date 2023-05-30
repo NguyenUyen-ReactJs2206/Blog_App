@@ -31,9 +31,10 @@ export default function Login() {
         toast.success('Login successful!', {
           autoClose: 1000
         })
+        navigate('/')
         window.location.reload()
         setIsAuthenticated(true)
-        navigate('/')
+        
       })
       //Khi loi 422 thi show error
       .catch((error) => {
