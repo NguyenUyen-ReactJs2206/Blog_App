@@ -5,7 +5,8 @@ import {
   favoritedArticle,
   getArticleDetail,
   getArticles,
-  getListFavoriteArtile
+  getListFavoriteArticle,
+  getListMyArticle
 } from 'src/apis/article.api'
 import { ArticleDetails, ArticleList } from 'src/types/article.type'
 
@@ -13,11 +14,13 @@ interface ArticleState {
   articleList: ArticleList
   articleDetail: ArticleDetails | null
   favoritedArticles: ArticleList
+  myArticles: ArticleList
 }
 const initialState: ArticleState = {
   articleList: { articles: [], articlesCount: '' },
   articleDetail: null,
-  favoritedArticles: { articles: [], articlesCount: '' }
+  favoritedArticles: { articles: [], articlesCount: '' },
+  myArticles: { articles: [], articlesCount: '' }
 }
 //Get List Article
 export const getArticleListThunk = createAsyncThunk('articles/getArticleList', async (params: any, thunkAPI) => {
@@ -36,11 +39,18 @@ export const getArticleDetailThunk = createAsyncThunk('articles/getArticleDetail
 export const getListFavoriteArtileThunk = createAsyncThunk(
   'articles/getListFavoriteArtile',
   async (params: any, thunkAPI) => {
-    const response = await getListFavoriteArtile(params, thunkAPI.signal)
+    const response = await getListFavoriteArticle(params, thunkAPI.signal)
     console.log(response, 'Favorite Listtttttttttttttttt')
     return response.data
   }
 )
+
+//getListMyArticle
+export const getListMyArtileThunk = createAsyncThunk('articles/getListMyArtile', async (params: any, thunkAPI) => {
+  const response = await getListMyArticle(params, thunkAPI.signal)
+  console.log(response, 'My Article Listtttttttttttttttt')
+  return response.data
+})
 
 // Is Favorites
 export const postFavoritedArticleThunk = createAsyncThunk('articles/favorited', async (id: string, thunkAPI) => {
@@ -92,6 +102,9 @@ const articlesSlice = createSlice({
       }),
       buider.addCase(getListFavoriteArtileThunk.fulfilled, (state, action) => {
         state.favoritedArticles = action.payload
+      }),
+      buider.addCase(getListMyArtileThunk.fulfilled, (state, action) => {
+        state.myArticles = action.payload
       })
   }
 })

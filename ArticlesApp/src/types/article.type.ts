@@ -42,6 +42,7 @@ export interface ArticleListConfig {
   offset?: number | string
   tag?: string
   favorited?: string
+  author?: string
 }
 export type ArticleList = SuccessArticle<ListArticle>
 

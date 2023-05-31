@@ -13,7 +13,10 @@ export const getArticleDetail = (id: string, signal: AbortSignal) =>
 export const getArticlesFeed = (params: ArticleListConfig, signal: AbortSignal) =>
   http.get<ArticleList>(`${URL}/feed`, { params, signal: signal })
 
-export const getListFavoriteArtile = (params: ArticleListConfig, signal: AbortSignal) =>
+export const getListFavoriteArticle = (params: ArticleListConfig, signal: AbortSignal) =>
+  http.get<ArticleList>(URL, { params, signal })
+
+export const getListMyArticle = (params: ArticleListConfig, signal: AbortSignal) =>
   http.get<ArticleList>(URL, { params, signal })
 
 export const favoritedArticle = (id: string, signal: AbortSignal) =>
