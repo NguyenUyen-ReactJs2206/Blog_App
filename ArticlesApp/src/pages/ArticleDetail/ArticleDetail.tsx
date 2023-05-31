@@ -17,7 +17,6 @@ export default function ArticleDetail() {
   const articleList = useSelector((state: RootState) => state.articlesReducer.articleList)
 
   const articleDetailShow = articleList.articles.find((article) => article.slug === articleDetail?.article.slug)
-  console.log(articleDetailShow, '11111111111111111111111111111111111111')
 
   const { profile, isAuthenticated } = useContext(AppContext)
   const { nameId } = useParams()
@@ -243,7 +242,18 @@ export default function ArticleDetail() {
                         </svg>
                         Follow {articleDetailShow?.author.username}
                       </button>
-                      <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-green/70 px-2 pt-1 text-center text-sm text-white transition hover:bg-green hover:text-white'>
+                      <button
+                        onClick={() => {
+                          !articleDetailShow?.favorited
+                            ? handleAddFavorite(articleDetailShow.slug)
+                            : handleRemoveFavorite(articleDetailShow.slug)
+                        }}
+                        className={
+                          articleDetailShow?.favorited === false
+                            ? 'mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-green/70 px-2 pt-1 text-center text-sm text-white transition hover:bg-green hover:text-white'
+                            : 'mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-green px-2 pt-1 text-center text-sm text-white transition'
+                        }
+                      >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'

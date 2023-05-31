@@ -1,21 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { deleteFavoritedArticle, favoritedArticle, getArticleDetail, getArticles } from 'src/apis/article.api'
+import {
+  deleteFavoritedArticle,
+  favoritedArticle,
+  getArticleDetail,
+  getArticles,
+  getListFavoriteArtile
+} from 'src/apis/article.api'
 import { ArticleDetails, ArticleList } from 'src/types/article.type'
 
 interface ArticleState {
   articleList: ArticleList
   articleDetail: ArticleDetails | null
-  isFavorites: boolean
+  favoritedArticles: ArticleList
 }
 const initialState: ArticleState = {
   articleList: { articles: [], articlesCount: '' },
   articleDetail: null,
-  isFavorites: false
+  favoritedArticles: { articles: [], articlesCount: '' }
 }
 //Get List Article
 export const getArticleListThunk = createAsyncThunk('articles/getArticleList', async (params: any, thunkAPI) => {
   const response = await getArticles(params, thunkAPI.signal)
+  console.log(response, 'Listtttttttttttttttttttttttttt')
   return response.data
 })
 
@@ -25,14 +32,15 @@ export const getArticleDetailThunk = createAsyncThunk('articles/getArticleDetail
   return response.data
 })
 
-//getListFavoriteAriticle
-// export const getListFavoriteArtileThunk = createAsyncThunk(
-//   'articles/getListFavoriteArtile',
-//   async (params: string, thunkAPI) => {
-//     const response = await getArticleDetail(params, thunkAPI.signal)
-//     return response.data
-//   }
-// )
+// getListFavoriteAriticle
+export const getListFavoriteArtileThunk = createAsyncThunk(
+  'articles/getListFavoriteArtile',
+  async (params: any, thunkAPI) => {
+    const response = await getListFavoriteArtile(params, thunkAPI.signal)
+    console.log(response, 'Favorite Listtttttttttttttttt')
+    return response.data
+  }
+)
 
 // Is Favorites
 export const postFavoritedArticleThunk = createAsyncThunk('articles/favorited', async (id: string, thunkAPI) => {
@@ -76,11 +84,14 @@ const articlesSlice = createSlice({
         const postId = action.meta.arg
         //Tim vi tri cua article muon favorite
         const articleIndex = state.articleList.articles.find((article) => article.slug === postId)
-        // Neu dung vi tri article va favorited=false thi chuyen no thanh true va tang so luong count favorite len 1
+        // Neu dung vi tri article va favorited=false thi chuyen no thanh true va giam so luong count favorite len 1
         if (articleIndex && articleIndex.favorited) {
           articleIndex.favorited = false
           articleIndex.favoritesCount--
         }
+      }),
+      buider.addCase(getListFavoriteArtileThunk.fulfilled, (state, action) => {
+        state.favoritedArticles = action.payload
       })
   }
 })

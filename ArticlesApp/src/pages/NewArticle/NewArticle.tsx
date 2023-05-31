@@ -2,22 +2,22 @@ import { useForm } from 'react-hook-form'
 import { addArticle } from 'src/apis/article.api'
 import { ListArticle } from 'src/types/article.type'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 type PostArticle = Pick<ListArticle, 'title' | 'description' | 'body' | 'tagList'>
 export default function NewArticle() {
-  // const [myArticles, setMyArticles] = useState([])
   const { register, handleSubmit } = useForm<PostArticle>()
+  const navigate = useNavigate()
 
   const postArticle = (body: any) => {
     const controller = new AbortController()
 
     addArticle(body, controller.signal).then((res) => {
-      console.log(res, 'ressssssssssssss')
-      const articlePosted = res.data.article
-      console.log(articlePosted, 'llllllllllllllll')
+      // const articlePosted = res.data.article
       toast.success('Post articles success!', {
         autoClose: 1000
       })
+      navigate('/')
     })
     return () => {
       controller.abort()

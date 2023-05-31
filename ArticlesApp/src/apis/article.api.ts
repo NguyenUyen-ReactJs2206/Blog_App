@@ -14,7 +14,7 @@ export const getArticlesFeed = (params: ArticleListConfig, signal: AbortSignal) 
   http.get<ArticleList>(`${URL}/feed`, { params, signal: signal })
 
 export const getListFavoriteArtile = (params: ArticleListConfig, signal: AbortSignal) =>
-  http.get<FavoritedType>(URL, { params, signal })
+  http.get<ArticleList>(URL, { params, signal })
 
 export const favoritedArticle = (id: string, signal: AbortSignal) =>
   http.post<FavoritedType>(`${URL}/${id}/favorite`, { signal })

@@ -36,7 +36,7 @@ export default function YourFeed() {
         setArticles(articleListResult)
         setPagination((prev) => ({
           ...prev,
-          totalPage: Math.ceil(res?.data.articlesCount / PAGINATION.LIMIT)
+          totalPage: Math.ceil((res?.data.articlesCount as number) / PAGINATION.LIMIT)
         }))
 
         dispatch({
