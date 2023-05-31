@@ -18,6 +18,25 @@ export type ListArticle = {
   }
 }
 
+export type ListArticleDetail = {
+  slug: string
+  title: string
+  description: string
+  body: string
+  tagList: string[]
+  createdAt: string
+  updatedAt: string
+  favorited: boolean
+  favoritesCount: number
+  author: {
+    username: string
+    bio: null
+    image: string
+    following: boolean
+  }
+  id: number
+}
+
 export interface ArticleListConfig {
   limit?: number | string
   offset?: number | string
@@ -26,4 +45,4 @@ export interface ArticleListConfig {
 }
 export type ArticleList = SuccessArticle<ListArticle>
 
-export type ArticleDetails = SuccessArticleDetail<ListArticle>
+export type ArticleDetails = SuccessArticleDetail<ListArticleDetail>

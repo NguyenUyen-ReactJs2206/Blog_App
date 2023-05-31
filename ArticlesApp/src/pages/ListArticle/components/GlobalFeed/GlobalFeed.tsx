@@ -80,14 +80,14 @@ export default function GlobalFeed() {
             </div>
             <div className='justify-end'>
               <button
+                onClick={() => {
+                  !article.favorited ? handleAddFavorite(article.slug) : handleRemoveFavorite(article.slug)
+                }}
                 className={
                   article.favorited === false
                     ? 'mr-4 flex cursor-pointer rounded-sm border border-green bg-white stroke-none px-2 py-1 text-center text-green hover:bg-green hover:text-white'
                     : 'mr-4 flex cursor-pointer rounded-sm border border-green bg-green stroke-none px-2 py-1 text-center text-white'
                 }
-                onClick={() => {
-                  !article.favorited ? handleAddFavorite(article.slug) : handleRemoveFavorite(article.slug)
-                }}
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'

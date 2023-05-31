@@ -16,14 +16,12 @@ const initialState: ArticleState = {
 //Get List Article
 export const getArticleListThunk = createAsyncThunk('articles/getArticleList', async (params: any, thunkAPI) => {
   const response = await getArticles(params, thunkAPI.signal)
-  console.log(response, 'getArticleeee')
   return response.data
 })
 
 //Get ArticleDetail
 export const getArticleDetailThunk = createAsyncThunk('articles/getArticleDetail', async (id: string, thunkAPI) => {
   const response = await getArticleDetail(id, thunkAPI.signal)
-  console.log(response.data, 'rrrrrrrrrrrrrrrrrr')
   return response.data
 })
 
