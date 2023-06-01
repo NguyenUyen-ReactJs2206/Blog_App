@@ -18,7 +18,10 @@ import { AppContext } from 'src/contexts/app.context'
 
 export default function MyArticle() {
   const myArticles = useSelector((state: RootState) => state.articlesReducer.myArticles)
+  const articleList = useSelector((state: RootState) => state.articlesReducer.articleList)
   const { profile } = useContext(AppContext)
+
+  const articleOfMe = articleList.articles.filter((article) => article.author.username === profile?.username)
 
   //pagination
   const [pagination, setPagination] = useState<PaginationType>({
@@ -69,8 +72,8 @@ export default function MyArticle() {
   return (
     <div className=''>
       {!myArticles.articles && <SkeletonPost />}
-      {myArticles.articles.length === 0 && <div className='py-4'>Not My Articles...</div>}
-      {myArticles?.articles.map((article) => (
+      {myArticles.articles.length === 0 && <div className='py-4'>No articles are here... yet.</div>}
+      {articleOfMe.map((article) => (
         <div className='border-t border-gray-200 py-3' key={article.slug}>
           <div className='flex justify-between py-3'>
             <div className='flex justify-start'>
