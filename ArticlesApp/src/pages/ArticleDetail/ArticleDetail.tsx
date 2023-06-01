@@ -51,7 +51,7 @@ export default function ArticleDetail() {
       {articleDetailShow && (
         <div className='min-h-[100vh]'>
           <div className=' bg-grayblack py-8'>
-            <div className='container'>
+            <div className='container px-2 sm:px-10 md:px-16'>
               <h1 className='mb-7 text-4xl font-bold text-white'>{articleDetailShow?.title}</h1>
               <div className='flex flex-wrap justify-start'>
                 <div className='mr-6 flex flex-shrink-0'>
@@ -148,7 +148,9 @@ export default function ArticleDetail() {
                           d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z'
                         />
                       </svg>
-                      Favorite Article ({articleDetailShow?.favoritesCount})
+                      {articleDetailShow?.favorited === false
+                        ? `Favorite Article (${articleDetailShow?.favoritesCount})`
+                        : `Unfavorite Article (${articleDetailShow?.favoritesCount})`}
                     </button>
                   </>
                 )}
@@ -156,7 +158,7 @@ export default function ArticleDetail() {
             </div>
           </div>
           <div className='py-4'>
-            <div className='container'>
+            <div className='container px-2 sm:px-10 md:px-16'>
               <div className='py-4 text-xl text-gray-600'>
                 <p>{articleDetailShow?.body}</p>
               </div>
@@ -268,7 +270,9 @@ export default function ArticleDetail() {
                             d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z'
                           />
                         </svg>
-                        Favorite Article ({articleDetailShow?.favoritesCount})
+                        {articleDetailShow?.favorited === false
+                          ? `Favorite Article (${articleDetailShow?.favoritesCount})`
+                          : `Unfavorite Article (${articleDetailShow?.favoritesCount})`}
                       </button>
                     </>
                   )}
@@ -294,14 +298,14 @@ export default function ArticleDetail() {
                     <div className='grid grid-cols-12'>
                       <div className='col-span-12 md:col-span-6 md:col-start-4 xl:col-span-8 xl:col-start-3'>
                         <div className='rounded-md border border-gray-300'>
-                          <div className='active:border-none'>
+                          <div className=''>
                             <textarea
                               placeholder='Write a comment...'
                               rows={3}
-                              className='w-full rounded-md p-4 focus:bg-none'
+                              className='h-full w-full rounded-md p-4 outline-none'
                             ></textarea>
                           </div>
-                          <div className='flex flex-wrap justify-between border-t border-t-gray-300 px-6 py-2'>
+                          <div className='flex flex-wrap justify-between border-t border-t-gray-300 bg-gray-200 px-6 py-2'>
                             <div className='mr-2 h-8 w-8 flex-shrink-0 cursor-pointer'>
                               <img
                                 src={profile?.image}
