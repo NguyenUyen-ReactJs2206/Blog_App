@@ -27,12 +27,11 @@ export default function Login() {
   const userLoginAccount = (body: any) => {
     const controller = new AbortController()
     loginAccount(body, controller.signal)
-      .then((res) => {
+      .then(() => {
         toast.success('Login successful!', {
           autoClose: 1000
         })
         navigate('/')
-        window.location.reload()
         setIsAuthenticated(true)
       })
       //Khi loi 422 thi show error
@@ -54,6 +53,9 @@ export default function Login() {
             })
           }
         }
+      })
+      .finally(() => {
+        window.location.reload()
       })
     return () => {
       controller.abort()

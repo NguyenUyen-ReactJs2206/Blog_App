@@ -9,7 +9,8 @@ import { RootState, useAppDispatch } from 'src/store'
 import {
   deleteFavoriteArticleThunk,
   getArticleDetailThunk,
-  postFavoritedArticleThunk
+  postFavoritedArticleThunk,
+  resetStateDetail
 } from 'src/useslice/articles.slice'
 
 export default function ArticleDetail() {
@@ -23,7 +24,9 @@ export default function ArticleDetail() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
+    dispatch(resetStateDetail())
     const promise = dispatch(getArticleDetailThunk(nameId as string))
+
     return () => {
       promise.abort()
     }
@@ -131,7 +134,7 @@ export default function ArticleDetail() {
                       className={
                         articleDetailShow?.favorited === false
                           ? 'mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-grayblack px-2 pt-1 text-center text-sm text-green transition hover:bg-green hover:text-white'
-                          : 'mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-green px-2 pt-1 text-center text-sm text-white transition'
+                          : 'mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-green px-2 pt-1 text-center text-sm text-white transition hover:bg-lime-400/80'
                       }
                     >
                       <svg

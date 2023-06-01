@@ -1,5 +1,5 @@
 import { getProfileFromLS, getTokenFromLs } from 'src/utils/auth'
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
 import { User } from 'src/types/user.type'
 
 interface AppContextInterface {
@@ -24,11 +24,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialAppContext.isAuthenticated)
   const [profile, setProfile] = useState<User | null>(initialAppContext.profile)
 
-  console.log(profile, 'ppppppppppppppppppppppppppp')
   const reset = () => {
     setIsAuthenticated(false)
     setProfile(null)
   }
+
   return (
     <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated, profile, setProfile, reset }}>
       {children}

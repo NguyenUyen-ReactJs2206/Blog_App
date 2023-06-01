@@ -40,7 +40,6 @@ export const getListFavoriteArtileThunk = createAsyncThunk(
   'articles/getListFavoriteArtile',
   async (params: any, thunkAPI) => {
     const response = await getListFavoriteArticle(params, thunkAPI.signal)
-    console.log(response, 'Favorite Listtttttttttttttttt')
     return response.data
   }
 )
@@ -48,28 +47,32 @@ export const getListFavoriteArtileThunk = createAsyncThunk(
 //getListMyArticle
 export const getListMyArtileThunk = createAsyncThunk('articles/getListMyArtile', async (params: any, thunkAPI) => {
   const response = await getListMyArticle(params, thunkAPI.signal)
-  console.log(response, 'My Article Listtttttttttttttttt')
   return response.data
 })
 
 // Is Favorites
 export const postFavoritedArticleThunk = createAsyncThunk('articles/favorited', async (id: string, thunkAPI) => {
   const response = await favoritedArticle(id, thunkAPI.signal)
-  console.log(response, 'PostAAAAAAAAA')
   return response.data
 })
 
 // Delete Favorites
 export const deleteFavoriteArticleThunk = createAsyncThunk('blog/deleteFavorite', async (id: string, thunkAPI) => {
   const response = await deleteFavoritedArticle(id, thunkAPI.signal)
-  console.log(response, 'Deleteeee')
   return response.data
 })
 
 const articlesSlice = createSlice({
   name: 'articles',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    resetStateDetail(state) {
+      state.articleDetail = null
+    },
+    resetStateList(state) {
+      state.articleList = { articles: [], articlesCount: '' }
+    }
+  },
   // Xu ly trong extraReducer de khong co generate ra action
   extraReducers(buider) {
     buider.addCase(getArticleListThunk.fulfilled, (state, action) => {
@@ -109,5 +112,6 @@ const articlesSlice = createSlice({
   }
 })
 
+export const { resetStateDetail, resetStateList } = articlesSlice.actions
 const articlesReducer = articlesSlice.reducer
 export default articlesReducer

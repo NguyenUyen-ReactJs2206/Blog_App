@@ -16,10 +16,10 @@ import { User } from 'src/types/user.type'
 class Http {
   instance: AxiosInstance
   private accessToken: string
-  private profile: User
+  // private profile: User
   constructor() {
     this.accessToken = getTokenFromLs()
-    this.profile = getProfileFromLS()
+    // this.profile = getProfileFromLS()
     this.instance = axios.create({
       baseURL: 'https://api.realworld.io/api/',
       timeout: 10000,
@@ -47,9 +47,9 @@ class Http {
         if (url === '/users/login' || url === '/users') {
           this.accessToken = (response.data as AuthSuccess).user.token
           saveTokenToLS(this.accessToken)
-          this.profile = (response.data as AuthSuccess).user
-          saveProfileToLS(this.profile)
-          console.log((response.data as AuthSuccess).user)
+          // this.profile = (response.data as AuthSuccess).user
+          // saveProfileToLS(this.profile)
+          saveProfileToLS((response.data as AuthSuccess).user)
         }
         return response
       },
