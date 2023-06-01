@@ -91,6 +91,20 @@ const articlesSlice = createSlice({
           articleIndex.favorited = true
           articleIndex.favoritesCount++
         }
+
+        const myArticleIndex = state.myArticles.articles.find((article) => article.slug === postId)
+        // Neu dung vi tri article va favorited=false thi chuyen no thanh true va giam so luong count favorite len 1
+        if (myArticleIndex && !myArticleIndex.favorited) {
+          myArticleIndex.favorited = true
+          myArticleIndex.favoritesCount++
+        }
+
+        const favoritedArticleIndex = state.favoritedArticles.articles.find((article) => article.slug === postId)
+        // Neu dung vi tri article va favorited=false thi chuyen no thanh true va giam so luong count favorite len 1
+        if (favoritedArticleIndex && !favoritedArticleIndex.favorited) {
+          favoritedArticleIndex.favorited = true
+          favoritedArticleIndex.favoritesCount++
+        }
       }),
       buider.addCase(deleteFavoriteArticleThunk.fulfilled, (state, action) => {
         //id truyen vao or postId= action.payload.article.slug
@@ -101,6 +115,20 @@ const articlesSlice = createSlice({
         if (articleIndex && articleIndex.favorited) {
           articleIndex.favorited = false
           articleIndex.favoritesCount--
+        }
+
+        const myArticleIndex = state.myArticles.articles.find((article) => article.slug === postId)
+        // Neu dung vi tri article va favorited=false thi chuyen no thanh true va giam so luong count favorite len 1
+        if (myArticleIndex && myArticleIndex.favorited) {
+          myArticleIndex.favorited = false
+          myArticleIndex.favoritesCount--
+        }
+
+        const favoritedArticleIndex = state.favoritedArticles.articles.find((article) => article.slug === postId)
+        // Neu dung vi tri article va favorited=false thi chuyen no thanh true va giam so luong count favorite len 1
+        if (favoritedArticleIndex && favoritedArticleIndex.favorited) {
+          favoritedArticleIndex.favorited = false
+          favoritedArticleIndex.favoritesCount--
         }
       }),
       buider.addCase(getListFavoriteArtileThunk.fulfilled, (state, action) => {

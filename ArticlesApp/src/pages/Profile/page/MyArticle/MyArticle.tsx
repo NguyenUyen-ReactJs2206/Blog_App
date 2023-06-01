@@ -69,11 +69,11 @@ export default function MyArticle() {
       promise.abort()
     }
   }
+
   return (
     <div className=''>
-      {!myArticles.articles && <SkeletonPost />}
       {myArticles.articles.length === 0 && <div className='py-4'>No articles are here... yet.</div>}
-      {articleOfMe.map((article) => (
+      {myArticles.articles.map((article) => (
         <div className='border-t border-gray-200 py-3' key={article.slug}>
           <div className='flex justify-between py-3'>
             <div className='flex justify-start'>

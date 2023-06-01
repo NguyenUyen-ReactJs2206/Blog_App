@@ -27,11 +27,12 @@ export default function Login() {
   const userLoginAccount = (body: any) => {
     const controller = new AbortController()
     loginAccount(body, controller.signal)
-      .then(() => {
+      .then((response) => {
         toast.success('Login successful!', {
           autoClose: 1000
         })
         navigate('/')
+        console.log(response, 'resssss')
         setIsAuthenticated(true)
       })
       //Khi loi 422 thi show error

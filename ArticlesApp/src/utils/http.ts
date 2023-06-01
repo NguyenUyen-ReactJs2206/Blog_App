@@ -3,8 +3,7 @@ import axios, { AxiosError, AxiosInstance } from 'axios'
 import HttpStatusCode from 'src/constants/httpStatusCode.enum'
 import { toast } from 'react-toastify'
 import { AuthSuccess } from 'src/types/auth.type'
-import { getProfileFromLS, getTokenFromLs, saveProfileToLS, saveTokenToLS } from './auth'
-import { User } from 'src/types/user.type'
+import { getTokenFromLs, saveProfileToLS, saveTokenToLS } from './auth'
 
 //Tai sao lai khai bao them 1 bien token lam gi?
 //Ta chi can sd gia tri token thoi thi ta co the lay tu LS,
@@ -19,7 +18,6 @@ class Http {
   // private profile: User
   constructor() {
     this.accessToken = getTokenFromLs()
-    // this.profile = getProfileFromLS()
     this.instance = axios.create({
       baseURL: 'https://api.realworld.io/api/',
       timeout: 10000,
@@ -47,8 +45,6 @@ class Http {
         if (url === '/users/login' || url === '/users') {
           this.accessToken = (response.data as AuthSuccess).user.token
           saveTokenToLS(this.accessToken)
-          // this.profile = (response.data as AuthSuccess).user
-          // saveProfileToLS(this.profile)
           saveProfileToLS((response.data as AuthSuccess).user)
         }
         return response

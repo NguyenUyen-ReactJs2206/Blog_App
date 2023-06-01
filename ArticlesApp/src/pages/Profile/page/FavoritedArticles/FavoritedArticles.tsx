@@ -18,10 +18,8 @@ import { AppContext } from 'src/contexts/app.context'
 
 export default function FavoritedArticles() {
   const favoritedArticles = useSelector((state: RootState) => state.articlesReducer.favoritedArticles)
-  const articleList = useSelector((state: RootState) => state.articlesReducer.articleList)
 
   const { profile } = useContext(AppContext)
-  const favoriteArticlesShow = articleList.articles.filter((article) => article.favorited === true)
 
   //pagination
   const [pagination, setPagination] = useState<PaginationType>({
@@ -71,10 +69,9 @@ export default function FavoritedArticles() {
   }
   return (
     <div className=''>
-      {!favoritedArticles.articles && <SkeletonPost />}
       {favoritedArticles.articles.length === 0 && <div className='py-4'>No articles are here... yet.</div>}
-      {favoritedArticles.articles.length > 0 &&
-        favoriteArticlesShow?.map((article) => (
+      {favoritedArticles.articles.length !== 0 &&
+        favoritedArticles.articles.map((article) => (
           <div className='border-t border-gray-200 py-3' key={article.slug}>
             <div className='flex justify-between py-3'>
               <div className='flex justify-start'>
