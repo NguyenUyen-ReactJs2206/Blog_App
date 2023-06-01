@@ -14,7 +14,7 @@ import { AppContext } from 'src/contexts/app.context'
 
 type FormLoginUser = Pick<User, 'email' | 'password'>
 export default function Login() {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
 
   const {
@@ -31,6 +31,7 @@ export default function Login() {
         toast.success('Login successful!', {
           autoClose: 1000
         })
+        setProfile(response.data.user)
         navigate('/')
         console.log(response, 'resssss')
         setIsAuthenticated(true)
@@ -39,7 +40,6 @@ export default function Login() {
       .catch((error) => {
         if (isAxiosForbiddenError<ErrorForbiddenMessage>(error)) {
           const formError = error.response?.data.errors
-          console.log(formError, 'ffffffffffffffffff')
 
           if (formError?.['email or password']) {
             setError('email', {
@@ -55,9 +55,9 @@ export default function Login() {
           }
         }
       })
-      .finally(() => {
-        window.location.reload()
-      })
+    // .finally(() => {
+    //   window.location.reload()
+    // })
     return () => {
       controller.abort()
     }

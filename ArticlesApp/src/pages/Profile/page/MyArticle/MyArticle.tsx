@@ -9,7 +9,6 @@ import {
   getListMyArtileThunk,
   postFavoritedArticleThunk
 } from 'src/useslice/articles.slice'
-import SkeletonPost from 'src/components/SkeletonPost'
 import { formatDate } from 'src/helpers/formatDate'
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
@@ -18,10 +17,7 @@ import { AppContext } from 'src/contexts/app.context'
 
 export default function MyArticle() {
   const myArticles = useSelector((state: RootState) => state.articlesReducer.myArticles)
-  const articleList = useSelector((state: RootState) => state.articlesReducer.articleList)
   const { profile } = useContext(AppContext)
-
-  const articleOfMe = articleList.articles.filter((article) => article.author.username === profile?.username)
 
   //pagination
   const [pagination, setPagination] = useState<PaginationType>({

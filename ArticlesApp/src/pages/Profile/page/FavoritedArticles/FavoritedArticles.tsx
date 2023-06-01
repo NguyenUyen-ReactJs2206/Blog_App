@@ -9,7 +9,6 @@ import {
   getListFavoriteArtileThunk,
   postFavoritedArticleThunk
 } from 'src/useslice/articles.slice'
-import SkeletonPost from 'src/components/SkeletonPost'
 import { formatDate } from 'src/helpers/formatDate'
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path'

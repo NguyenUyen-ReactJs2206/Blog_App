@@ -1,17 +1,22 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getArticlesFeed } from 'src/apis/article.api'
 import { PAGINATION, PaginationType } from 'src/constants/pagination'
 import path from 'src/constants/path'
 import { formatDate } from 'src/helpers/formatDate'
 import useQueryParams from 'src/hooks/useQueryParams'
-import { ArticleList, ArticleListConfig } from 'src/types/article.type'
+import { RootState, useAppDispatch } from 'src/store'
+import { ArticleListConfig } from 'src/types/article.type'
+import {
+  deleteFavoriteArticleThunk,
+  getArticlesYourFeedThunk,
+  postFavoritedArticleThunk
+} from 'src/useslice/articles.slice'
 
 export default function YourFeed() {
-  const queryParams: ArticleListConfig = useQueryParams()
-  const [articles, setArticles] = useState<ArticleList>()
+  const articlesYourFeed = useSelector((state: RootState) => state.articlesReducer.articlesYourFeed)
 
+  const queryParams: ArticleListConfig = useQueryParams()
   //pagination
   const [pagination, setPagination] = useState<PaginationType>({
     limit: PAGINATION.LIMIT,
@@ -26,42 +31,36 @@ export default function YourFeed() {
     [queryParams.limit, queryParams.offset, pagination.currentPage]
   )
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const controller = new AbortController()
-    getArticlesFeed(queryConfig, controller.signal)
-      .then((res) => {
-        const articleListResult = res.data
-        setArticles(articleListResult)
-        setPagination((prev) => ({
-          ...prev,
-          totalPage: Math.ceil((res?.data.articlesCount as number) / PAGINATION.LIMIT)
-        }))
-
-        dispatch({
-          type: 'article/getListArticleSuccess',
-          payload: articleListResult
-        })
-      })
-      //khi abort ko muon dispatch len
-      .catch((error) => {
-        // if (!(error.code === 'ERR_CANCELED')) {
-        //   dispatch({
-        //     type: 'article/getListArticleFaild',
-        //     payload: error
-        //   })
-        // }
-      })
+    const promise = dispatch(getArticlesYourFeedThunk(queryConfig))
+    setPagination((prev) => ({
+      ...prev,
+      totalPage: Math.ceil(Number(articlesYourFeed.articlesCount) / PAGINATION.LIMIT)
+    }))
     return () => {
-      controller.abort()
+      promise.abort()
     }
-  }, [queryConfig, dispatch])
+  }, [queryConfig, dispatch, articlesYourFeed.articlesCount])
+
+  const handleAddFavorite = (nameId: string) => {
+    const promise = dispatch(postFavoritedArticleThunk(nameId))
+    return () => {
+      promise.abort()
+    }
+  }
+
+  const handleRemoveFavorite = (nameId: string) => {
+    const promise = dispatch(deleteFavoriteArticleThunk(nameId))
+    return () => {
+      promise.abort()
+    }
+  }
   return (
     <>
-      {!articles && <div className='py-8'>Loading articles...</div>}
-      {articles?.articlesCount === 0 && <div className='py-8'>No articles are here... yet.</div>}
-      {articles?.articles.map((article, index) => (
+      {articlesYourFeed.articles.length === 0 && <div className='py-8'>No articles are here... yet.</div>}
+      {articlesYourFeed?.articles.map((article, index) => (
         <div className='border-t border-gray-200 py-3' key={index}>
           <div className='flex justify-between py-3'>
             <div className='flex justify-start'>
@@ -78,14 +77,23 @@ export default function YourFeed() {
               </div>
             </div>
             <div className='justify-end'>
-              <div className='mr-4 flex cursor-pointer rounded-sm border border-green stroke-none px-2 py-1 text-center text-green hover:bg-green hover:text-white'>
+              <button
+                onClick={() => {
+                  !article.favorited ? handleAddFavorite(article.slug) : handleRemoveFavorite(article.slug)
+                }}
+                className={
+                  article.favorited === false
+                    ? 'mr-4 flex cursor-pointer rounded-sm border border-green bg-white stroke-none px-2 py-1 text-center text-green hover:bg-green hover:text-white'
+                    : 'mr-4 flex cursor-pointer rounded-sm border border-green bg-green stroke-none px-2 py-1 text-center text-white'
+                }
+              >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className=' mt-1 h-4 w-4 fill-green'
+                  className=' mt-1 h-4 w-4 fill-current'
                 >
                   <path
                     strokeLinecap='round'
@@ -93,8 +101,8 @@ export default function YourFeed() {
                     d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z'
                   />
                 </svg>
-                <span>{article.favoritesCount}</span>
-              </div>
+                {article.favoritesCount}
+              </button>
             </div>
           </div>
           <Link to={`${path.articles}/${article.slug}`}>

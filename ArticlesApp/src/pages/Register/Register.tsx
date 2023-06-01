@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.context'
 
 export default function Register() {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
 
   const {
@@ -26,10 +26,11 @@ export default function Register() {
   const userRegisterAccount = (body: any) => {
     const controller = new AbortController()
     registerAccount(body, controller.signal)
-      .then((res) => {
+      .then((response) => {
         toast.success('Successful account registration!', {
           autoClose: 1000
         })
+        setProfile(response.data.user)
         setIsAuthenticated(true)
         navigate('/')
         window.location.reload()
