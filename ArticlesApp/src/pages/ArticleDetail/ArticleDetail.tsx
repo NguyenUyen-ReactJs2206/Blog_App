@@ -1,12 +1,13 @@
 import { useContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import SkeletonArticleDetail from 'src/components/SkeletonArticleDetail'
 import path from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
 import { formatDate } from 'src/helpers/formatDate'
 import { RootState, useAppDispatch } from 'src/store'
 import {
+  deleteArticleThunk,
   deleteFavoriteArticleThunk,
   getArticleDetailThunk,
   postFavoritedArticleThunk,
@@ -15,14 +16,11 @@ import {
 
 export default function ArticleDetail() {
   const articleDetail = useSelector((state: RootState) => state.articlesReducer.articleDetail)
-  const articleList = useSelector((state: RootState) => state.articlesReducer.articleList)
-
-  const articleDetailShow = articleList.articles.find((article) => article.slug === articleDetail?.article.slug)
 
   const { profile, isAuthenticated } = useContext(AppContext)
   const { nameId } = useParams()
   const dispatch = useAppDispatch()
-
+  const navigate = useNavigate()
   useEffect(() => {
     dispatch(resetStateDetail())
     const promise = dispatch(getArticleDetailThunk(nameId as string))
@@ -48,31 +46,41 @@ export default function ArticleDetail() {
     }
   }
 
+  const handleRemoveArticle = (nameId: string) => {
+    const promise = dispatch(deleteArticleThunk(nameId))
+    navigate('/')
+    return () => {
+      promise.abort()
+    }
+  }
+
   return (
     <>
-      {!articleDetailShow && <SkeletonArticleDetail />}
-      {articleDetailShow && (
+      {!articleDetail && <SkeletonArticleDetail />}
+      {articleDetail && (
         <div className='min-h-[100vh]'>
           <div className=' bg-grayblack py-8'>
             <div className='container px-2 sm:px-10 md:px-16'>
-              <h1 className='mb-7 text-4xl font-bold text-white'>{articleDetailShow?.title}</h1>
+              <h1 className='mb-7 text-4xl font-bold text-white'>{articleDetail?.article.title}</h1>
               <div className='flex flex-wrap justify-start'>
                 <div className='mr-6 flex flex-shrink-0'>
                   <div className='mr-2 h-10 w-10 flex-shrink-0 cursor-pointer'>
                     <img
-                      src={articleDetailShow?.author.image}
+                      src={articleDetail?.article.author.image}
                       alt='avatar'
                       className='h-full w-full rounded-full bg-current object-cover'
                     />
                   </div>
                   <div className='tex-left pr-2'>
                     <div className='text-md cursor-pointer font-light text-white hover:text-lime-600 hover:underline'>
-                      {articleDetailShow?.author.username}
+                      {articleDetail?.article.author.username}
                     </div>
-                    <span className='block text-[12px] text-gray-400'>{formatDate(articleDetailShow?.createdAt)}</span>
+                    <span className='block text-[12px] text-gray-400'>
+                      {formatDate(articleDetail?.article.createdAt)}
+                    </span>
                   </div>
                 </div>
-                {articleDetailShow.author.username === profile?.username && (
+                {articleDetail?.article.author.username === profile?.username && (
                   <>
                     <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-gray-300 bg-grayblack px-2 pt-1 text-center text-sm text-gray-400 transition hover:bg-gray-300 hover:text-white'>
                       <svg
@@ -91,7 +99,10 @@ export default function ArticleDetail() {
                       </svg>
                       Edit Article
                     </button>
-                    <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-red-400/50 bg-grayblack px-2 pt-1 text-center text-sm text-red-400/50 transition hover:bg-red-400/50 hover:text-white'>
+                    <button
+                      onClick={() => handleRemoveArticle(articleDetail?.article.slug)}
+                      className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-red-400/50 bg-grayblack px-2 pt-1 text-center text-sm text-red-400/50 transition hover:bg-red-400/50 hover:text-white'
+                    >
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -110,7 +121,7 @@ export default function ArticleDetail() {
                     </button>
                   </>
                 )}
-                {articleDetailShow.author.username !== profile?.username && (
+                {articleDetail?.article.author.username !== profile?.username && (
                   <>
                     <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-gray-300 bg-grayblack px-2 pt-1 text-center text-sm text-gray-400 transition hover:bg-gray-300 hover:text-white'>
                       <svg
@@ -123,16 +134,16 @@ export default function ArticleDetail() {
                       >
                         <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
                       </svg>
-                      Follow ({articleDetailShow?.author.username})
+                      Follow ({articleDetail?.article?.author.username})
                     </button>
                     <button
                       onClick={() => {
-                        !articleDetailShow?.favorited
-                          ? handleAddFavorite(articleDetailShow.slug)
-                          : handleRemoveFavorite(articleDetailShow.slug)
+                        !articleDetail?.article?.favorited
+                          ? handleAddFavorite(articleDetail?.article.slug)
+                          : handleRemoveFavorite(articleDetail?.article.slug)
                       }}
                       className={
-                        articleDetailShow?.favorited === false
+                        articleDetail?.article?.favorited === false
                           ? 'mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-grayblack px-2 pt-1 text-center text-sm text-green transition hover:bg-green hover:text-white'
                           : 'mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-green px-2 pt-1 text-center text-sm text-white transition hover:bg-lime-400/80'
                       }
@@ -151,9 +162,9 @@ export default function ArticleDetail() {
                           d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z'
                         />
                       </svg>
-                      {articleDetailShow?.favorited === false
-                        ? `Favorite Article (${articleDetailShow?.favoritesCount})`
-                        : `Unfavorite Article (${articleDetailShow?.favoritesCount})`}
+                      {articleDetail?.article?.favorited === false
+                        ? `Favorite Article (${articleDetail?.article?.favoritesCount})`
+                        : `Unfavorite Article (${articleDetail?.article?.favoritesCount})`}
                     </button>
                   </>
                 )}
@@ -163,10 +174,10 @@ export default function ArticleDetail() {
           <div className='py-4'>
             <div className='container px-2 sm:px-10 md:px-16'>
               <div className='py-4 text-xl text-gray-600'>
-                <p>{articleDetailShow?.body}</p>
+                <p>{articleDetail?.article?.body}</p>
               </div>
               <div className='my-5 flex flex-wrap justify-start'>
-                {articleDetailShow?.tagList.map((tag, index) => (
+                {articleDetail?.article?.tagList.map((tag, index) => (
                   <div
                     key={index}
                     className='mr-1 cursor-text rounded-xl border border-gray-300 px-2 py-1 text-[12px] text-gray-400'
@@ -180,21 +191,21 @@ export default function ArticleDetail() {
                   <div className='mr-6 flex flex-shrink-0'>
                     <div className='mr-2 h-10 w-10 flex-shrink-0 cursor-pointer'>
                       <img
-                        src={articleDetailShow?.author.image}
+                        src={articleDetail?.article?.author.image}
                         alt='avatar'
                         className='h-full w-full rounded-full bg-current object-cover'
                       />
                     </div>
                     <div className='tex-left pr-2'>
                       <div className='text-md cursor-pointer font-light text-green hover:text-lime-600 hover:underline'>
-                        {articleDetailShow?.author.username}
+                        {articleDetail?.article?.author.username}
                       </div>
                       <span className='block text-[12px] text-gray-400'>
-                        {formatDate(articleDetailShow?.createdAt)}
+                        {formatDate(articleDetail?.article?.createdAt)}
                       </span>
                     </div>
                   </div>
-                  {articleDetailShow.author.username === profile?.username && (
+                  {articleDetail?.article.author.username === profile?.username && (
                     <>
                       <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-gray-300 bg-white px-2 pt-1 text-center text-sm text-gray-400 transition hover:bg-gray-300 hover:text-white'>
                         <svg
@@ -232,7 +243,7 @@ export default function ArticleDetail() {
                       </button>
                     </>
                   )}
-                  {articleDetailShow.author.username !== profile?.username && (
+                  {articleDetail?.article.author.username !== profile?.username && (
                     <>
                       <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-gray-300 bg-white px-2 pt-1 text-center text-sm text-gray-400/80 transition hover:bg-gray-300 hover:text-white'>
                         <svg
@@ -245,16 +256,16 @@ export default function ArticleDetail() {
                         >
                           <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
                         </svg>
-                        Follow {articleDetailShow?.author.username}
+                        Follow {articleDetail?.article?.author.username}
                       </button>
                       <button
                         onClick={() => {
-                          !articleDetailShow?.favorited
-                            ? handleAddFavorite(articleDetailShow.slug)
-                            : handleRemoveFavorite(articleDetailShow.slug)
+                          !articleDetail?.article?.favorited
+                            ? handleAddFavorite(articleDetail?.article.slug)
+                            : handleRemoveFavorite(articleDetail?.article.slug)
                         }}
                         className={
-                          articleDetailShow?.favorited === false
+                          articleDetail?.article?.favorited === false
                             ? 'mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-green/70 px-2 pt-1 text-center text-sm text-white transition hover:bg-green hover:text-white'
                             : 'mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-green bg-green px-2 pt-1 text-center text-sm text-white transition'
                         }
@@ -273,9 +284,9 @@ export default function ArticleDetail() {
                             d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z'
                           />
                         </svg>
-                        {articleDetailShow?.favorited === false
-                          ? `Favorite Article (${articleDetailShow?.favoritesCount})`
-                          : `Unfavorite Article (${articleDetailShow?.favoritesCount})`}
+                        {articleDetail?.article?.favorited === false
+                          ? `Favorite Article (${articleDetail?.article?.favoritesCount})`
+                          : `Unfavorite Article (${articleDetail?.article?.favoritesCount})`}
                       </button>
                     </>
                   )}

@@ -7,16 +7,18 @@ const URL = 'articles'
 export const getArticles = (params: ArticleListConfig, signal: AbortSignal) =>
   http.get<ArticleList>(URL, { params, signal: signal })
 
+//Detail
 export const getArticleDetail = (id: string, signal: AbortSignal) =>
   http.get<ArticleDetails>(`${URL}/${id}`, { signal })
 
 export const getArticlesYourFeed = (params: ArticleListConfig, signal: AbortSignal) =>
   http.get<ArticleList>(`${URL}/feed`, { params, signal: signal })
 
-export const getListFavoriteArticle = (params: ArticleListConfig, signal: AbortSignal) =>
+export const getListMyArticle = (params: ArticleListConfig, signal: AbortSignal) =>
   http.get<ArticleList>(URL, { params, signal })
 
-export const getListMyArticle = (params: ArticleListConfig, signal: AbortSignal) =>
+//Favorited
+export const getListFavoriteArticle = (params: ArticleListConfig, signal: AbortSignal) =>
   http.get<ArticleList>(URL, { params, signal })
 
 export const favoritedArticle = (id: string, signal: AbortSignal) =>
@@ -25,7 +27,10 @@ export const favoritedArticle = (id: string, signal: AbortSignal) =>
 export const deleteFavoritedArticle = (id: string, signal: AbortSignal) =>
   http.delete<FavoritedType>(`${URL}/${id}/favorite`, { signal })
 
+//CRUD
 export const addArticle = (
   body: { body: string; description: string; tagList: string[]; title: string },
   signal: AbortSignal
 ) => http.post<PostArticleSuccess<ListArticle>>(URL, body, { signal })
+
+export const deleteArticle = (id: string, signal: AbortSignal) => http.delete<FavoritedType>(`${URL}/${id}`, { signal })

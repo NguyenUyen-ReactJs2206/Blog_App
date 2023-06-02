@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { AsyncThunk, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
+  deleteArticle,
   deleteFavoritedArticle,
   favoritedArticle,
   getArticleDetail,
@@ -9,7 +10,14 @@ import {
   getListFavoriteArticle,
   getListMyArticle
 } from 'src/apis/article.api'
+import ArticleDetail from 'src/pages/ArticleDetail'
 import { ArticleDetails, ArticleList } from 'src/types/article.type'
+
+type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>
+
+type PendingAction = ReturnType<GenericAsyncThunk['pending']>
+type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>
+type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
 
 interface ArticleState {
   articleList: ArticleList
@@ -43,6 +51,7 @@ export const getArticlesYourFeedThunk = createAsyncThunk(
 //Get ArticleDetail
 export const getArticleDetailThunk = createAsyncThunk('articles/getArticleDetail', async (id: string, thunkAPI) => {
   const response = await getArticleDetail(id, thunkAPI.signal)
+  console.log(response, 'ddddddddddddddddddddddddddddddd')
   return response.data
 })
 
@@ -73,15 +82,19 @@ export const deleteFavoriteArticleThunk = createAsyncThunk('blog/deleteFavorite'
   return response.data
 })
 
+// CRUD
+export const deleteArticleThunk = createAsyncThunk('blog/deleteArticle', async (id: string, thunkAPI) => {
+  const response = await deleteArticle(id, thunkAPI.signal)
+  console.log(response, 'rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
+  return response.data
+})
+
 const articlesSlice = createSlice({
   name: 'articles',
   initialState: initialState,
   reducers: {
     resetStateDetail(state) {
       state.articleDetail = null
-    },
-    resetStateList(state) {
-      state.articleList = { articles: [], articlesCount: '' }
     }
   },
   // Xu ly trong extraReducer de khong co generate ra action
@@ -104,6 +117,11 @@ const articlesSlice = createSlice({
         if (articleIndex && !articleIndex.favorited) {
           articleIndex.favorited = true
           articleIndex.favoritesCount++
+        }
+
+        if (state.articleDetail?.article.slug === postId && !state.articleDetail.article.favorited) {
+          state.articleDetail.article.favorited = true
+          state.articleDetail.article.favoritesCount++
         }
 
         const articlesYourFeedIndex = state.articlesYourFeed.articles.find((article) => article.slug === postId)
@@ -133,6 +151,11 @@ const articlesSlice = createSlice({
           articleIndex.favoritesCount--
         }
 
+        if (state.articleDetail?.article.slug === postId && state.articleDetail.article.favorited) {
+          state.articleDetail.article.favorited = false
+          state.articleDetail.article.favoritesCount--
+        }
+
         const articlesYourFeedIndex = state.articlesYourFeed.articles.find((article) => article.slug === postId)
         if (articlesYourFeedIndex && articlesYourFeedIndex.favorited) {
           articlesYourFeedIndex.favorited = false
@@ -157,9 +180,16 @@ const articlesSlice = createSlice({
       buider.addCase(getListMyArtileThunk.fulfilled, (state, action) => {
         state.myArticles = action.payload
       })
+    //CRUD
+    buider.addCase(deleteArticleThunk.fulfilled, (state, action) => {
+      const postId = action.meta.arg
+      const articleDeleteIndex = state.articleList.articles.findIndex((item) => item.slug === postId)
+      if (articleDeleteIndex !== -1) {
+        state.articleList.articles.splice(articleDeleteIndex, 1)
+      }
+    })
   }
 })
-
-export const { resetStateDetail, resetStateList } = articlesSlice.actions
+export const { resetStateDetail } = articlesSlice.actions
 const articlesReducer = articlesSlice.reducer
 export default articlesReducer
