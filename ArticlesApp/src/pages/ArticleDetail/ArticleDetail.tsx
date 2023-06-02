@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import SkeletonArticleDetail from 'src/components/SkeletonArticleDetail'
 import path from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
@@ -11,7 +11,8 @@ import {
   deleteFavoriteArticleThunk,
   getArticleDetailThunk,
   postFavoritedArticleThunk,
-  resetStateDetail
+  resetStateDetail,
+  startEditingPost
 } from 'src/useslice/articles.slice'
 
 export default function ArticleDetail() {
@@ -21,6 +22,7 @@ export default function ArticleDetail() {
   const { nameId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
   useEffect(() => {
     dispatch(resetStateDetail())
     const promise = dispatch(getArticleDetailThunk(nameId as string))
@@ -44,6 +46,12 @@ export default function ArticleDetail() {
     return () => {
       promise.abort()
     }
+  }
+
+  //CRUD
+  const handleStartEditingArticle = (nameId: string) => {
+    dispatch(startEditingPost(nameId))
+    navigate({ pathname: path.editor, hash: nameId })
   }
 
   const handleRemoveArticle = (nameId: string) => {
@@ -82,7 +90,10 @@ export default function ArticleDetail() {
                 </div>
                 {articleDetail?.article.author.username === profile?.username && (
                   <>
-                    <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-gray-300 bg-grayblack px-2 pt-1 text-center text-sm text-gray-400 transition hover:bg-gray-300 hover:text-white'>
+                    <button
+                      onClick={() => handleStartEditingArticle(articleDetail?.article.slug)}
+                      className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-gray-300 bg-grayblack px-2 pt-1 text-center text-sm text-gray-400 transition hover:bg-gray-300 hover:text-white'
+                    >
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'

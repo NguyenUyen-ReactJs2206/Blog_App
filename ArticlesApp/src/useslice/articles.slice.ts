@@ -11,7 +11,7 @@ import {
   getListFavoriteArticle,
   getListMyArticle
 } from 'src/apis/article.api'
-import { ArticleDetails, ArticleList } from 'src/types/article.type'
+import { ArticleDetails, ArticleList, BodyPostArticle, ListArticle } from 'src/types/article.type'
 
 interface ArticleState {
   articleList: ArticleList
@@ -19,13 +19,15 @@ interface ArticleState {
   articleDetail: ArticleDetails | null
   favoritedArticles: ArticleList
   myArticles: ArticleList
+  editingArticle: ListArticle | null
 }
 const initialState: ArticleState = {
   articleList: { articles: [], articlesCount: '' },
   articlesYourFeed: { articles: [], articlesCount: '' },
   articleDetail: null,
   favoritedArticles: { articles: [], articlesCount: '' },
-  myArticles: { articles: [], articlesCount: '' }
+  myArticles: { articles: [], articlesCount: '' },
+  editingArticle: null
 }
 //Get List Article
 export const getArticleListThunk = createAsyncThunk('articles/getArticleList', async (params: any, thunkAPI) => {
@@ -92,6 +94,11 @@ const articlesSlice = createSlice({
   reducers: {
     resetStateDetail(state) {
       state.articleDetail = null
+    },
+    startEditingPost: (state, action) => {
+      const postId = action.payload
+      const foundPost = state.articleList.articles.find((item) => item.slug === postId) || null
+      state.editingArticle = foundPost
     }
   },
   // Xu ly trong extraReducer de khong co generate ra action
@@ -190,6 +197,6 @@ const articlesSlice = createSlice({
       })
   }
 })
-export const { resetStateDetail } = articlesSlice.actions
+export const { resetStateDetail, startEditingPost } = articlesSlice.actions
 const articlesReducer = articlesSlice.reducer
 export default articlesReducer

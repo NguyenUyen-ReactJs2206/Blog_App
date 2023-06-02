@@ -1,4 +1,4 @@
-import { ArticleDetails, ArticleList, ArticleListConfig, ListArticle } from 'src/types/article.type'
+import { ArticleDetails, ArticleList, ArticleListConfig, BodyPostArticle, ListArticle } from 'src/types/article.type'
 import { FavoritedType } from 'src/types/favorite.type'
 import { PostArticleSuccess } from 'src/types/utils.type'
 import http from 'src/utils/http'
@@ -28,9 +28,11 @@ export const deleteFavoritedArticle = (id: string, signal: AbortSignal) =>
   http.delete<FavoritedType>(`${URL}/${id}/favorite`, { signal })
 
 //CRUD
-export const addArticle = (
-  body: { body: string; description: string; tagList: string[]; title: string },
-  signal: AbortSignal
-) => http.post<PostArticleSuccess<ListArticle>>(URL, body, { signal })
+export const addArticle = (body: BodyPostArticle, signal: AbortSignal) =>
+  http.post<PostArticleSuccess<ListArticle>>(URL, body, { signal })
+
+export const updateArticle = (id: string, body: BodyPostArticle, signal: AbortSignal) => {
+  http.put<PostArticleSuccess<ListArticle>>(`${URL}/${id}`, body, { signal })
+}
 
 export const deleteArticle = (id: string, signal: AbortSignal) => http.delete<FavoritedType>(`${URL}/${id}`, { signal })

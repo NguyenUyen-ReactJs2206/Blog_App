@@ -36,6 +36,7 @@ export type ListArticleDetail = {
   }
   id: number
 }
+export type BodyPostArticle = { body: string; description: string; tagList: string[]; title: string }
 
 export interface ArticleListConfig {
   limit?: number | string

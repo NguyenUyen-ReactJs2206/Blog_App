@@ -1,16 +1,36 @@
 import { useForm } from 'react-hook-form'
-
-import { ListArticle } from 'src/types/article.type'
+import { useEffect, useState } from 'react'
+import { BodyPostArticle, ListArticle } from 'src/types/article.type'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { addArticleThunk } from 'src/useslice/articles.slice'
-import { useAppDispatch } from 'src/store'
+import { RootState, useAppDispatch } from 'src/store'
+import { useSelector } from 'react-redux'
 
-type PostArticle = Pick<ListArticle, 'title' | 'description' | 'body' | 'tagList'>
+const initialState: BodyPostArticle = {
+  title: '',
+  description: '',
+  body: '',
+  tagList: []
+}
 export default function NewArticle() {
-  const { register, handleSubmit } = useForm<PostArticle>()
+  const { register, handleSubmit, setValue } = useForm<BodyPostArticle>()
+  const editingArticle = useSelector((state: RootState) => state.articlesReducer.editingArticle)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    const newFormData = {
+      title: editingArticle?.title,
+      description: editingArticle?.description,
+      body: editingArticle?.body,
+      tagList: editingArticle?.tagList
+    }
+    setValue('title', newFormData.title || initialState.title)
+    setValue('description', newFormData.description || initialState.description)
+    setValue('body', newFormData.body || initialState.body)
+    setValue('tagList', newFormData.tagList || initialState.tagList)
+  }, [editingArticle?.body, editingArticle?.title, editingArticle?.description, editingArticle?.tagList, setValue])
 
   const postArticle = (body: any) => {
     const promise = dispatch(addArticleThunk(body))
