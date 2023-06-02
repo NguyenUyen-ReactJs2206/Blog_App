@@ -224,7 +224,10 @@ export default function ArticleDetail() {
                         </svg>
                         Edit Article
                       </button>
-                      <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-red-400/50 bg-white px-2 pt-1 text-center text-sm text-red-700/80 transition hover:bg-red-800/70 hover:text-white'>
+                      <button
+                        onClick={() => handleRemoveArticle(articleDetail?.article.slug)}
+                        className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-red-400/50 bg-white px-2 pt-1 text-center text-sm text-red-700/80 transition hover:bg-red-800/70 hover:text-white'
+                      >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AsyncThunk, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
+  addArticle,
   deleteArticle,
   deleteFavoritedArticle,
   favoritedArticle,
@@ -10,14 +11,7 @@ import {
   getListFavoriteArticle,
   getListMyArticle
 } from 'src/apis/article.api'
-import ArticleDetail from 'src/pages/ArticleDetail'
 import { ArticleDetails, ArticleList } from 'src/types/article.type'
-
-type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>
-
-type PendingAction = ReturnType<GenericAsyncThunk['pending']>
-type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>
-type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
 
 interface ArticleState {
   articleList: ArticleList
@@ -51,7 +45,6 @@ export const getArticlesYourFeedThunk = createAsyncThunk(
 //Get ArticleDetail
 export const getArticleDetailThunk = createAsyncThunk('articles/getArticleDetail', async (id: string, thunkAPI) => {
   const response = await getArticleDetail(id, thunkAPI.signal)
-  console.log(response, 'ddddddddddddddddddddddddddddddd')
   return response.data
 })
 
@@ -83,9 +76,13 @@ export const deleteFavoriteArticleThunk = createAsyncThunk('blog/deleteFavorite'
 })
 
 // CRUD
+export const addArticleThunk = createAsyncThunk('articles/addArticle', async (body: any, thunkAPI) => {
+  const response = await addArticle(body, thunkAPI.signal)
+  return response.data.article
+})
+
 export const deleteArticleThunk = createAsyncThunk('blog/deleteArticle', async (id: string, thunkAPI) => {
   const response = await deleteArticle(id, thunkAPI.signal)
-  console.log(response, 'rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
   return response.data
 })
 
@@ -179,15 +176,18 @@ const articlesSlice = createSlice({
       }),
       buider.addCase(getListMyArtileThunk.fulfilled, (state, action) => {
         state.myArticles = action.payload
+      }),
+      //CRUD
+      buider.addCase(addArticleThunk.fulfilled, (state, action) => {
+        state.articleList.articles.push(action.payload)
+      }),
+      buider.addCase(deleteArticleThunk.fulfilled, (state, action) => {
+        const postId = action.meta.arg
+        const articleDeleteIndex = state.articleList.articles.findIndex((item) => item.slug === postId)
+        if (articleDeleteIndex !== -1) {
+          state.articleList.articles.splice(articleDeleteIndex, 1)
+        }
       })
-    //CRUD
-    buider.addCase(deleteArticleThunk.fulfilled, (state, action) => {
-      const postId = action.meta.arg
-      const articleDeleteIndex = state.articleList.articles.findIndex((item) => item.slug === postId)
-      if (articleDeleteIndex !== -1) {
-        state.articleList.articles.splice(articleDeleteIndex, 1)
-      }
-    })
   }
 })
 export const { resetStateDetail } = articlesSlice.actions

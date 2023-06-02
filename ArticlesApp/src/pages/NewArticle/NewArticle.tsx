@@ -1,26 +1,26 @@
 import { useForm } from 'react-hook-form'
-import { addArticle } from 'src/apis/article.api'
+
 import { ListArticle } from 'src/types/article.type'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { addArticleThunk } from 'src/useslice/articles.slice'
+import { useAppDispatch } from 'src/store'
 
 type PostArticle = Pick<ListArticle, 'title' | 'description' | 'body' | 'tagList'>
 export default function NewArticle() {
   const { register, handleSubmit } = useForm<PostArticle>()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const postArticle = (body: any) => {
-    const controller = new AbortController()
-
-    addArticle(body, controller.signal).then((res) => {
-      // const articlePosted = res.data.article
-      toast.success('Post articles success!', {
-        autoClose: 1000
-      })
-      navigate('/')
+    const promise = dispatch(addArticleThunk(body))
+    toast.success('Post articles success!', {
+      autoClose: 1000
     })
+    navigate('/')
+
     return () => {
-      controller.abort()
+      promise.abort()
     }
   }
   const onSubmit = handleSubmit((data) => {
