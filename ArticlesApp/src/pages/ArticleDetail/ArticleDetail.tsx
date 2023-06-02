@@ -51,7 +51,7 @@ export default function ArticleDetail() {
   //CRUD
   const handleStartEditingArticle = (nameId: string) => {
     dispatch(startEditingPost(nameId))
-    navigate({ pathname: path.editor, hash: nameId })
+    navigate('/editor')
   }
 
   const handleRemoveArticle = (nameId: string) => {

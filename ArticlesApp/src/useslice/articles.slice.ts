@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AsyncThunk, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
   addArticle,
   deleteArticle,
@@ -11,7 +11,7 @@ import {
   getListFavoriteArticle,
   getListMyArticle
 } from 'src/apis/article.api'
-import { ArticleDetails, ArticleList, BodyPostArticle, ListArticle } from 'src/types/article.type'
+import { ArticleDetails, ArticleList, ListArticle } from 'src/types/article.type'
 
 interface ArticleState {
   articleList: ArticleList
@@ -83,6 +83,10 @@ export const addArticleThunk = createAsyncThunk('articles/addArticle', async (bo
   return response.data.article
 })
 
+// export const updateArticleThunk = createAsyncThunk('blog/updateArticle', async (id: string, body: any, thunkAPI) => {
+//   const response = await updateArticle(id, body, thunkAPI.signal)
+//   return response.data
+// })
 export const deleteArticleThunk = createAsyncThunk('blog/deleteArticle', async (id: string, thunkAPI) => {
   const response = await deleteArticle(id, thunkAPI.signal)
   return response.data
@@ -99,6 +103,9 @@ const articlesSlice = createSlice({
       const postId = action.payload
       const foundPost = state.articleList.articles.find((item) => item.slug === postId) || null
       state.editingArticle = foundPost
+    },
+    cancelEditingPost: (state, action) => {
+      state.editingArticle = null
     }
   },
   // Xu ly trong extraReducer de khong co generate ra action
@@ -197,6 +204,6 @@ const articlesSlice = createSlice({
       })
   }
 })
-export const { resetStateDetail, startEditingPost } = articlesSlice.actions
+export const { resetStateDetail, startEditingPost, cancelEditingPost } = articlesSlice.actions
 const articlesReducer = articlesSlice.reducer
 export default articlesReducer

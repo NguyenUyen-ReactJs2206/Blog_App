@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
-import { BodyPostArticle, ListArticle } from 'src/types/article.type'
+import { Fragment, useEffect } from 'react'
+import { BodyPostArticle } from 'src/types/article.type'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { addArticleThunk } from 'src/useslice/articles.slice'
+import { addArticleThunk, cancelEditingPost } from 'src/useslice/articles.slice'
 import { RootState, useAppDispatch } from 'src/store'
 import { useSelector } from 'react-redux'
 
@@ -20,17 +20,13 @@ export default function NewArticle() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const newFormData = {
-      title: editingArticle?.title,
-      description: editingArticle?.description,
-      body: editingArticle?.body,
-      tagList: editingArticle?.tagList
+    if (editingArticle) {
+      setValue('title', editingArticle?.title || initialState.title)
+      setValue('description', editingArticle?.description || initialState.description)
+      setValue('body', editingArticle?.body || initialState.body)
+      setValue('tagList', editingArticle?.tagList || initialState.tagList)
     }
-    setValue('title', newFormData.title || initialState.title)
-    setValue('description', newFormData.description || initialState.description)
-    setValue('body', newFormData.body || initialState.body)
-    setValue('tagList', newFormData.tagList || initialState.tagList)
-  }, [editingArticle?.body, editingArticle?.title, editingArticle?.description, editingArticle?.tagList, setValue])
+  }, [editingArticle, setValue])
 
   const postArticle = (body: any) => {
     const promise = dispatch(addArticleThunk(body))
@@ -47,6 +43,10 @@ export default function NewArticle() {
     postArticle({ article: data })
   })
 
+  const handleCancelEditingPost = (nameId: string) => {
+    dispatch(cancelEditingPost)
+    navigate(`/article/${nameId}`)
+  }
   return (
     <div className='my-8 min-h-[80vh]'>
       <div className='container'>
@@ -92,12 +92,37 @@ export default function NewArticle() {
                     />
                   </div>
                   <div className='flex justify-end'>
-                    <button
-                      type='submit'
-                      className='rounded-md bg-green/80 px-4 py-3 text-xl text-gray-100 hover:bg-green hover:text-white'
-                    >
-                      Publiish Article
-                    </button>
+                    {!editingArticle && (
+                      <button
+                        className='group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 group-hover:from-purple-600 group-hover:to-blue-500 dark:text-white dark:focus:ring-blue-800'
+                        type='submit'
+                      >
+                        <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
+                          Publish Article
+                        </span>
+                      </button>
+                    )}
+                    {editingArticle && (
+                      <Fragment>
+                        <button
+                          type='submit'
+                          className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-teal-300 to-lime-300 p-0.5 text-sm font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-lime-200 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 dark:focus:ring-lime-800'
+                        >
+                          <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
+                            Update Post
+                          </span>
+                        </button>
+                        <button
+                          type='reset'
+                          className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 p-0.5 text-sm font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-red-100 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 dark:focus:ring-red-400'
+                          onClick={() => handleCancelEditingPost(editingArticle.slug)}
+                        >
+                          <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
+                            Cancel
+                          </span>
+                        </button>
+                      </Fragment>
+                    )}
                   </div>
                 </form>
               </div>
