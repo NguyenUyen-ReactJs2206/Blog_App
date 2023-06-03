@@ -3,7 +3,7 @@ import { Fragment, useEffect } from 'react'
 import { BodyPostArticle } from 'src/types/article.type'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { addArticleThunk, cancelEditingPost } from 'src/useslice/articles.slice'
+import { addArticleThunk, cancelEditingPost, updateArticleThunk } from 'src/useslice/articles.slice'
 import { RootState, useAppDispatch } from 'src/store'
 import { useSelector } from 'react-redux'
 
@@ -26,27 +26,42 @@ export default function NewArticle() {
       setValue('body', editingArticle?.body || initialState.body)
       setValue('tagList', editingArticle?.tagList || initialState.tagList)
     }
-  }, [editingArticle, setValue])
+  }, [editingArticle, dispatch, setValue])
 
   const postArticle = (body: any) => {
-    const promise = dispatch(addArticleThunk(body))
-    toast.success('Post articles success!', {
-      autoClose: 1000
-    })
-    navigate('/')
-
-    return () => {
-      promise.abort()
+    if (editingArticle) {
+      dispatch(
+        updateArticleThunk({
+          id: editingArticle.slug,
+          body: body
+        })
+      )
+      navigate(`/article/${editingArticle.slug}`)
+      toast.success('Update articles success!', {
+        autoClose: 1000
+      })
+    } else {
+      dispatch(addArticleThunk(body))
+      navigate('/')
+      toast.success('Post articles success!', {
+        autoClose: 1000
+      })
     }
+    setValue('title', initialState.title)
+    setValue('description', initialState.description)
+    setValue('body', initialState.body)
+    setValue('tagList', initialState.tagList)
   }
+
   const onSubmit = handleSubmit((data) => {
     postArticle({ article: data })
   })
 
   const handleCancelEditingPost = (nameId: string) => {
-    dispatch(cancelEditingPost)
+    dispatch(cancelEditingPost())
     navigate(`/article/${nameId}`)
   }
+
   return (
     <div className='my-8 min-h-[80vh]'>
       <div className='container'>

@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import SkeletonArticleDetail from 'src/components/SkeletonArticleDetail'
 import path from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'

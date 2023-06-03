@@ -9,7 +9,8 @@ import {
   getArticles,
   getArticlesYourFeed,
   getListFavoriteArticle,
-  getListMyArticle
+  getListMyArticle,
+  updateArticle
 } from 'src/apis/article.api'
 import { ArticleDetails, ArticleList, ListArticle } from 'src/types/article.type'
 
@@ -83,10 +84,14 @@ export const addArticleThunk = createAsyncThunk('articles/addArticle', async (bo
   return response.data.article
 })
 
-// export const updateArticleThunk = createAsyncThunk('blog/updateArticle', async (id: string, body: any, thunkAPI) => {
-//   const response = await updateArticle(id, body, thunkAPI.signal)
-//   return response.data
-// })
+export const updateArticleThunk = createAsyncThunk(
+  'blog/updateArticle',
+  async ({ id, body }: { id: string; body: any }, thunkAPI) => {
+    const response = await updateArticle(id, body, thunkAPI.signal)
+    console.log(response, 'reeeeeeeeeeeeeeee')
+    return response.data
+  }
+)
 export const deleteArticleThunk = createAsyncThunk('blog/deleteArticle', async (id: string, thunkAPI) => {
   const response = await deleteArticle(id, thunkAPI.signal)
   return response.data
@@ -104,7 +109,7 @@ const articlesSlice = createSlice({
       const foundPost = state.articleList.articles.find((item) => item.slug === postId) || null
       state.editingArticle = foundPost
     },
-    cancelEditingPost: (state, action) => {
+    cancelEditingPost: (state) => {
       state.editingArticle = null
     }
   },
@@ -194,6 +199,21 @@ const articlesSlice = createSlice({
       //CRUD
       buider.addCase(addArticleThunk.fulfilled, (state, action) => {
         state.articleList.articles.push(action.payload)
+      }),
+      buider.addCase(updateArticleThunk.fulfilled, (state, action) => {
+        const postId = action.meta.arg.id
+        state.articleList.articles.find((article, index) => {
+          if (article.slug === postId) {
+            state.articleList.articles[index] = action.payload.article
+            //return cho dung vong lap
+            return true
+          }
+          return false
+        })
+        if (state.articleDetail?.article.slug === postId) {
+          state.articleDetail.article = action.payload.article
+        }
+        state.editingArticle = null
       }),
       buider.addCase(deleteArticleThunk.fulfilled, (state, action) => {
         const postId = action.meta.arg

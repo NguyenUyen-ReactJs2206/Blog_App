@@ -31,8 +31,7 @@ export const deleteFavoritedArticle = (id: string, signal: AbortSignal) =>
 export const addArticle = (body: BodyPostArticle, signal: AbortSignal) =>
   http.post<PostArticleSuccess<ListArticle>>(URL, body, { signal })
 
-export const updateArticle = (id: string, body: BodyPostArticle, signal: AbortSignal) => {
+export const updateArticle = (id: string, body: BodyPostArticle, signal: AbortSignal) =>
   http.put<PostArticleSuccess<ListArticle>>(`${URL}/${id}`, body, { signal })
-}
 
 export const deleteArticle = (id: string, signal: AbortSignal) => http.delete<FavoritedType>(`${URL}/${id}`, { signal })

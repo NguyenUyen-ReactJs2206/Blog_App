@@ -34,7 +34,6 @@ export type ListArticleDetail = {
     image: string
     following: boolean
   }
-  id: number
 }
 export type BodyPostArticle = { body: string; description: string; tagList: string[]; title: string }
 
