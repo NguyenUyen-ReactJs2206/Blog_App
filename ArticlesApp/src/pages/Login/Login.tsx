@@ -31,6 +31,7 @@ export default function Login() {
         toast.success('Login successful!', {
           autoClose: 1000
         })
+        console.log(response.data, 'llllllllllllllllllllll')
         setProfile(response.data.user)
         navigate('/')
         console.log(response, 'resssss')
@@ -55,9 +56,7 @@ export default function Login() {
           }
         }
       })
-    // .finally(() => {
-    //   window.location.reload()
-    // })
+
     return () => {
       controller.abort()
     }

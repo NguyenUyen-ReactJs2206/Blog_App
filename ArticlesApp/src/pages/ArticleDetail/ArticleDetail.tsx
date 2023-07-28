@@ -218,7 +218,10 @@ export default function ArticleDetail() {
                   </div>
                   {articleDetail?.article.author.username === profile?.username && (
                     <>
-                      <button className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-gray-300 bg-white px-2 pt-1 text-center text-sm text-gray-400 transition hover:bg-gray-300 hover:text-white'>
+                      <button
+                        onClick={() => handleStartEditingArticle(articleDetail?.article.slug)}
+                        className='mr-1 mt-1 flex h-[30px] flex-shrink-0 rounded-md border border-gray-300 bg-white px-2 pt-1 text-center text-sm text-gray-400 transition hover:bg-gray-300 hover:text-white'
+                      >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'

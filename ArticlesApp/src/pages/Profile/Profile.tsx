@@ -1,16 +1,27 @@
 import { Link, NavLink } from 'react-router-dom'
 import path from 'src/constants/path'
-import { useContext } from 'react'
-import { AppContext } from 'src/contexts/app.context'
+import { useEffect } from 'react'
 import classNames from 'classnames'
+import { RootState, useAppDispatch } from 'src/store'
+import { getProfileThunk } from 'src/useslice/user.slice'
+import { useSelector } from 'react-redux'
 
 interface Props {
   children?: React.ReactNode
 }
 
 export default function Profile({ children }: Props) {
-  const { profile } = useContext(AppContext)
+  const profile = useSelector((state: RootState) => state.userReducer.profile)
+  console.log(profile, 'fffffffffffffffffff')
+  const dispatch = useAppDispatch()
 
+  useEffect(() => {
+    const promise = dispatch(getProfileThunk())
+
+    return () => {
+      promise.abort()
+    }
+  }, [dispatch])
   return (
     <div className='min-h-[90vh]'>
       <div className='bg-graybg py-2'>
@@ -21,13 +32,13 @@ export default function Profile({ children }: Props) {
                 <div className='flex flex-col items-center justify-center p-2'>
                   <div className='h-24 w-24 flex-shrink-0  items-center justify-center text-center'>
                     <img
-                      src={profile?.image}
+                      src={profile?.user.image}
                       alt='avatar'
                       className='h-full w-full rounded-full bg-current object-cover'
                     />
                   </div>
-                  <div className='mt-2 text-xl font-bold capitalize'>{profile?.username}</div>
-                  <div className='text-md mt-2 text-gray-400'>{profile?.bio}</div>
+                  <div className='mt-2 text-xl font-bold capitalize'>{profile?.user.username}</div>
+                  <div className='text-md mt-2 text-gray-400'>{profile?.user.bio}</div>
                 </div>
                 <div className='mt-4 flex justify-end text-gray-500'>
                   <Link

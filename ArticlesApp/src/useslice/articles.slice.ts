@@ -88,7 +88,6 @@ export const updateArticleThunk = createAsyncThunk(
   'blog/updateArticle',
   async ({ id, body }: { id: string; body: any }, thunkAPI) => {
     const response = await updateArticle(id, body, thunkAPI.signal)
-    console.log(response, 'reeeeeeeeeeeeeeee')
     return response.data
   }
 )

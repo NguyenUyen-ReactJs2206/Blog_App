@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { getProfile } from 'src/apis/profiles.api'
 
 import { AuthResponse } from 'src/types/auth.type'
 
 interface UserState {
   user: AuthResponse | null
+  profile: AuthResponse | null
 }
 const initialState: UserState = {
-  user: null
+  user: null,
+  profile: null
 }
 
 // export const postUserLoginThunk = createAsyncThunk('users/login', async (body: any, thunkAPI) => {
@@ -15,6 +18,11 @@ const initialState: UserState = {
 //   console.log(response, 'login')
 //   return response.data
 // })
+export const getProfileThunk = createAsyncThunk('user/getProfile', async (_, thunkAPI) => {
+  const response = await getProfile(thunkAPI.signal)
+  console.log(response, 'rrrrrrrrrrrrrrrrrrrrrrrrr')
+  return response.data
+})
 
 const userSlice = createSlice({
   name: 'users',
@@ -23,12 +31,13 @@ const userSlice = createSlice({
     addUserRegisterAccount: (state, action: PayloadAction<AuthResponse>) => {
       state.user = action.payload
     }
+  },
+  extraReducers(builder) {
+    builder.addCase(getProfileThunk.fulfilled, (state, action: any) => {
+      console.log(action.payload)
+      state.profile = action.payload
+    })
   }
-  // extraReducers(builder) {
-  //   builder.addCase('users/login', (state, action: any) => {
-  //     state.user = action.payload
-  //   })
-  // }
 })
 export const { addUserRegisterAccount } = userSlice.actions
 const userReducer = userSlice.reducer
