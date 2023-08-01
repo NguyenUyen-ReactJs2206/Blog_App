@@ -1,13 +1,28 @@
 import classNames from 'classnames'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
+import { RootState, useAppDispatch } from 'src/store'
+import { getProfileThunk } from 'src/useslice/user.slice'
 import { clearLS } from 'src/utils/auth'
 
 export default function RegisterHeader() {
-  const { isAuthenticated, setIsAuthenticated, profile } = useContext(AppContext)
+  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
   const navigate = useNavigate()
+  const profile = useSelector((state: RootState) => state.userReducer.profile)
+  console.log(profile, 'fffffffffffffffffff')
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    const promise = dispatch(getProfileThunk())
+
+    return () => {
+      promise.abort()
+    }
+  }, [dispatch])
+
   const handleLogout = () => {
     clearLS()
     window.location.reload()
@@ -134,12 +149,12 @@ export default function RegisterHeader() {
                 >
                   <div className='mr-2 h-6 w-6 flex-shrink-0'>
                     <img
-                      src={profile?.image}
+                      src={profile?.user.image}
                       alt='avatar'
                       className='h-full w-full  rounded-full bg-current object-cover'
                     />
                   </div>
-                  <span>{profile?.username}</span>
+                  <span>{profile?.user.username}</span>
                 </NavLink>
                 <Link
                   to='/'
