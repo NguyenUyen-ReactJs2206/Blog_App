@@ -16,3 +16,9 @@ export interface UserFavorite {
   bio: null
   demo: boolean
 }
+export interface UserSetting {
+  image: string
+  username: string
+  bio: string
+  email: string
+}

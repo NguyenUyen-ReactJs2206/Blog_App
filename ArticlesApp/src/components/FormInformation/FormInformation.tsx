@@ -1,32 +1,45 @@
-import { useContext } from 'react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { AppContext } from 'src/contexts/app.context'
-import { User } from 'src/types/user.type'
+import { useSelector } from 'react-redux'
+import { RootState } from 'src/store'
+import { User, UserSetting } from 'src/types/user.type'
 
+const initialState: UserSetting = {
+  image: '',
+  username: '',
+  bio: '',
+  email: ''
+}
 export default function FormInformation() {
+  const editingProfile = useSelector((state: RootState) => state.userReducer.profile)
   const { register, handleSubmit, setValue } = useForm<User>()
-  const { profile } = useContext(AppContext)
-  //Profile => get /profiles/username
-
-  //   "profile": {
-  //     "username": "nhocccdggsd",
-  //     "bio": "Hi. I'm Nhocccc",
-  //     "image": "https://api.realworld.io/images/smiley-cyrus.jpeg",
-  //     "following": false
-  // }
 
   //Setting => put /user
   //
-  // "user": {
+  // "profile": {
   //   "email": "nhoc@gmail.com",
   //   "username": "nhocccdggsd",
   //   "bio": "Hi. I'm Nhocccc",
   //   "image": "https://api.realworld.io/images/smiley-cyrus.jpeg",
   //   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoibmhvY0BnbWFpbC5jb20iLCJ1c2VybmFtZSI6Im5ob2NjY2RnZ3NkIn0sImlhdCI6MTY5MDQ0ODU2OSwiZXhwIjoxNjk1NjMyNTY5fQ.N-NX1sZtirmKpj3HfeeINeOJdZKlfgUKPQfy6Txwia4"
   // }
+
+  useEffect(() => {
+    // Thiết lập giá trị ban đầu cho các ô input từ Redux state
+    if (editingProfile) {
+      setValue('image', editingProfile?.user.image || initialState.image)
+      setValue('username', editingProfile?.user.username || initialState.username)
+      setValue('bio', editingProfile?.user.bio || initialState.bio)
+      setValue('email', editingProfile?.user.email || initialState.email)
+    }
+  }, [editingProfile, setValue])
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data)
+  })
   return (
     <div className='my-4'>
-      <form>
+      <form onSubmit={onSubmit}>
         <div className='mb-6'>
           <input
             type='text'

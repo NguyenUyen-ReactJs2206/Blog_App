@@ -3,6 +3,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getProfile } from 'src/apis/profiles.api'
 
 import { AuthResponse } from 'src/types/auth.type'
+import { UserSetting } from 'src/types/user.type'
 
 interface UserState {
   user: AuthResponse | null

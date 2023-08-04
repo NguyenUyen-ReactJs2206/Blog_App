@@ -5,7 +5,7 @@ interface Props {
   children?: React.ReactNode
 }
 
-export default function RegisterLayout({ children }: Props) {
+export default function MainLayout({ children }: Props) {
   return (
     <div>
       <RegisterHeader />

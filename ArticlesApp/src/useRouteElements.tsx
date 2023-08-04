@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import path from './constants/path'
-import RegisterLayout from './layouts/RegisterLayout'
+
 import NotFound from './pages/NotFound'
 import ArticleDetail from './pages/ArticleDetail'
 import Profile from './pages/Profile'
@@ -15,6 +15,7 @@ import YourFeed from './pages/ListArticle/components/YourFeed'
 import GlobalFeed from './pages/ListArticle/components/GlobalFeed'
 import MyArticle from './pages/Profile/page/MyArticle'
 import FavoritedArticles from './pages/Profile/page/FavoritedArticles'
+import MainLayout from './layouts/MainLayout'
 
 //Neu da login thi cho tiep tuc vao, chua login thi navigate ve trang login
 function ProtectedRoute() {
@@ -37,17 +38,17 @@ export default function useRouteElements() {
         {
           path: path.login,
           element: (
-            <RegisterLayout>
+            <MainLayout>
               <Login />
-            </RegisterLayout>
+            </MainLayout>
           )
         },
         {
           path: path.register,
           element: (
-            <RegisterLayout>
+            <MainLayout>
               <Register />
-            </RegisterLayout>
+            </MainLayout>
           )
         }
       ]
@@ -56,39 +57,39 @@ export default function useRouteElements() {
       path: '',
       index: true,
       element: (
-        <RegisterLayout>
+        <MainLayout>
           <ListArticleLayout>
             <GlobalFeed />
           </ListArticleLayout>
-        </RegisterLayout>
+        </MainLayout>
       )
     },
     {
       path: path.yourFeed,
       index: true,
       element: (
-        <RegisterLayout>
+        <MainLayout>
           <ListArticleLayout>
             <YourFeed />
           </ListArticleLayout>
-        </RegisterLayout>
+        </MainLayout>
       )
     },
     {
       path: '*',
       element: (
-        <RegisterLayout>
+        <MainLayout>
           <NotFound />
-        </RegisterLayout>
+        </MainLayout>
       )
     },
     {
       path: `${path.articles}${path.articleDetail}`,
       index: true,
       element: (
-        <RegisterLayout>
+        <MainLayout>
           <ArticleDetail />
-        </RegisterLayout>
+        </MainLayout>
       )
     },
     {
@@ -98,37 +99,37 @@ export default function useRouteElements() {
         {
           path: path.profile,
           element: (
-            <RegisterLayout>
+            <MainLayout>
               <Profile>
                 <MyArticle />
               </Profile>
-            </RegisterLayout>
+            </MainLayout>
           )
         },
         {
           path: path.favoritedArticle,
           element: (
-            <RegisterLayout>
+            <MainLayout>
               <Profile>
                 <FavoritedArticles />
               </Profile>
-            </RegisterLayout>
+            </MainLayout>
           )
         },
         {
           path: path.editor,
           element: (
-            <RegisterLayout>
+            <MainLayout>
               <NewArticle />
-            </RegisterLayout>
+            </MainLayout>
           )
         },
         {
           path: path.settings,
           element: (
-            <RegisterLayout>
+            <MainLayout>
               <Settings />
-            </RegisterLayout>
+            </MainLayout>
           )
         }
       ]
