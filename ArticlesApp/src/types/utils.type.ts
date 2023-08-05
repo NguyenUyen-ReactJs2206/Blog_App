@@ -1,7 +1,6 @@
 export interface SuccessResponseApi<UserData> {
   user: UserData
 }
-
 export interface SuccessArticle<ListArticle> {
   articles: ListArticle[]
   articlesCount: number | string

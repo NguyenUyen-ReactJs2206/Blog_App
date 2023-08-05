@@ -7,6 +7,13 @@ export interface User {
   token?: string
 }
 
+export interface ProfileType {
+  username: string
+  bio: string
+  image: string
+  following?: boolean
+}
+
 export interface UserFavorite {
   id: number
   email: string

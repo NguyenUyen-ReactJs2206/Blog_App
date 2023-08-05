@@ -5,7 +5,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import path from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
 import { RootState, useAppDispatch } from 'src/store'
-import { getProfileThunk, startEditingProfile } from 'src/useslice/user.slice'
+import { getProfileThunk } from 'src/useslice/user.slice'
 import { clearLS } from 'src/utils/auth'
 
 export default function RegisterHeader() {
