@@ -11,17 +11,16 @@ interface Props {
 }
 
 export default function Profile({ children }: Props) {
-  const profile = useSelector((state: RootState) => state.userReducer.profile)
-  console.log(profile, 'fffffffffffffffffff')
+  const profiles = useSelector((state: RootState) => state.userReducer.profile)
+
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     const promise = dispatch(getProfileThunk())
-
     return () => {
       promise.abort()
     }
-  }, [dispatch])
+  }, [profiles?.user.email, profiles?.user.bio, profiles?.user.image, profiles?.user.username, dispatch])
   return (
     <div className='min-h-[90vh]'>
       <div className='bg-graybg py-2'>
@@ -32,13 +31,13 @@ export default function Profile({ children }: Props) {
                 <div className='flex flex-col items-center justify-center p-2'>
                   <div className='h-24 w-24 flex-shrink-0  items-center justify-center text-center'>
                     <img
-                      src={profile?.user.image}
+                      src={profiles?.user.image}
                       alt='avatar'
                       className='h-full w-full rounded-full bg-current object-cover'
                     />
                   </div>
-                  <div className='mt-2 text-xl font-bold capitalize'>{profile?.user.username}</div>
-                  <div className='text-md mt-2 text-gray-400'>{profile?.user.bio}</div>
+                  <div className='mt-2 text-xl font-bold capitalize'>{profiles?.user.username}</div>
+                  <div className='text-md mt-2 text-gray-400'>{profiles?.user.bio}</div>
                 </div>
                 <div className='mt-4 flex justify-end text-gray-500'>
                   <Link

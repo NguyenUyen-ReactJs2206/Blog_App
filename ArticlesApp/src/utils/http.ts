@@ -45,7 +45,6 @@ class Http {
         if (url === '/users/login' || url === '/users') {
           this.accessToken = (response.data as AuthSuccess).user.token
           saveTokenToLS(this.accessToken)
-          saveProfileToLS((response.data as AuthSuccess).user)
         }
         return response
       },

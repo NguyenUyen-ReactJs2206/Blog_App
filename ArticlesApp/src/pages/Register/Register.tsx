@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.context'
 
 export default function Register() {
-  const { setIsAuthenticated, setProfile } = useContext(AppContext)
+  const { setIsAuthenticated } = useContext(AppContext)
   const navigate = useNavigate()
 
   const {
@@ -30,7 +30,7 @@ export default function Register() {
         toast.success('Successful account registration!', {
           autoClose: 1000
         })
-        setProfile(response.data.user)
+
         setIsAuthenticated(true)
         navigate('/')
         window.location.reload()

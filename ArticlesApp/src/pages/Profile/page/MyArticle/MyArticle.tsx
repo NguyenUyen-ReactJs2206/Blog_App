@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useContext } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { PAGINATION, PaginationType } from 'src/constants/pagination'
 import useQueryParams from 'src/hooks/useQueryParams'
@@ -13,11 +13,10 @@ import { formatDate } from 'src/helpers/formatDate'
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
 import Pagination from 'src/components/Pagination.tsx'
-import { AppContext } from 'src/contexts/app.context'
 
 export default function MyArticle() {
   const myArticles = useSelector((state: RootState) => state.articlesReducer.myArticles)
-  const { profile } = useContext(AppContext)
+  const profile = useSelector((state: RootState) => state.userReducer.profile?.user)
 
   //pagination
   const [pagination, setPagination] = useState<PaginationType>({

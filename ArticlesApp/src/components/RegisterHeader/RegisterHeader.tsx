@@ -16,7 +16,6 @@ export default function RegisterHeader() {
 
   useEffect(() => {
     const promise = dispatch(getProfileThunk())
-
     return () => {
       promise.abort()
     }
@@ -73,7 +72,7 @@ export default function RegisterHeader() {
                 </NavLink>
               </div>
             )}
-            {isAuthenticated && (
+            {isAuthenticated && profile && (
               <div className='flex flex-wrap items-center'>
                 <NavLink
                   to={path.home}

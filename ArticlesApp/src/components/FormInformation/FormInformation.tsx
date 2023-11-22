@@ -29,12 +29,13 @@ export default function FormInformation() {
   }, [editingProfile, setValue])
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    console.log(data, 'prrrrrrrrrrrrrrr')
     dispatch(
       updateProfileThunk({
         user: data
       })
     )
+
     toast.success('Edit Profile success!', {
       autoClose: 1000
     })

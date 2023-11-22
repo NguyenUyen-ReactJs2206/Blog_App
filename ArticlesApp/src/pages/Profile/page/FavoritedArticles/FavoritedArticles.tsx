@@ -13,12 +13,10 @@ import { formatDate } from 'src/helpers/formatDate'
 import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
 import Pagination from 'src/components/Pagination.tsx'
-import { AppContext } from 'src/contexts/app.context'
 
 export default function FavoritedArticles() {
   const favoritedArticles = useSelector((state: RootState) => state.articlesReducer.favoritedArticles)
-
-  const { profile } = useContext(AppContext)
+  const profile = useSelector((state: RootState) => state.userReducer.profile?.user)
 
   //pagination
   const [pagination, setPagination] = useState<PaginationType>({

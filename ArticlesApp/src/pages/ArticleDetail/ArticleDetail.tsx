@@ -18,7 +18,8 @@ import {
 export default function ArticleDetail() {
   const articleDetail = useSelector((state: RootState) => state.articlesReducer.articleDetail)
 
-  const { profile, isAuthenticated } = useContext(AppContext)
+  const { isAuthenticated } = useContext(AppContext)
+  const profile = useSelector((state: RootState) => state.userReducer.profile?.user)
   const { nameId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()

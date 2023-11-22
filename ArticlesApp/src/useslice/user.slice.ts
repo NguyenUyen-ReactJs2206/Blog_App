@@ -2,7 +2,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getProfile, updateProfile } from 'src/apis/profiles.api'
 import { AuthResponse } from 'src/types/auth.type'
-import { UserSetting } from 'src/types/user.type'
 
 interface UserState {
   user: AuthResponse | null
@@ -23,10 +22,7 @@ export const getProfileThunk = createAsyncThunk('user/getProfile', async (_, thu
 
   return response.data
 })
-// export const getProfileThunk = createAsyncThunk('user/getProfile', async (params: any, thunkAPI) => {
-//   const response = await getProfile(params, thunkAPI.signal)
-//   return response.data
-// })
+
 export const updateProfileThunk = createAsyncThunk('user/updateProfile', async (body: any, thunkAPI) => {
   const response = await updateProfile(body, thunkAPI.signal)
   console.log(response, 'rrrrrrrrrrrrrrrrrrrrrrrrr')

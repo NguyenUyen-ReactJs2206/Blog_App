@@ -14,7 +14,7 @@ import { AppContext } from 'src/contexts/app.context'
 
 type FormLoginUser = Pick<User, 'email' | 'password'>
 export default function Login() {
-  const { setIsAuthenticated, setProfile } = useContext(AppContext)
+  const { setIsAuthenticated } = useContext(AppContext)
   const navigate = useNavigate()
 
   const {
@@ -31,10 +31,8 @@ export default function Login() {
         toast.success('Login successful!', {
           autoClose: 1000
         })
-        console.log(response.data, 'llllllllllllllllllllll')
-        setProfile(response.data.user)
+
         navigate('/')
-        console.log(response, 'resssss')
         setIsAuthenticated(true)
       })
       //Khi loi 422 thi show error
